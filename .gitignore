@@ -1,0 +1,6 @@
+*.log
+npm-debug.log*
+node_modules/
+logs/
+src/lib/boards/*
+.env
