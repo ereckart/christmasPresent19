@@ -24,9 +24,11 @@
 
             // CONNECTION
             var socket = io();
-            function notifyServer(time, dir) {
+            function notifyServer(time, x, y, dir) {
                 socket.emit('direction', {
                     user: UUID,
+                    x: x,
+                    y: y,
                     direction: dir,
                     mypoch: time
                 })
@@ -101,7 +103,7 @@
             }
             function isAtUnit(id) {
                 var dist = getDist(id);
-                return dist == UNIT_SPEED_FRAMES || dist == 0
+                return dist == 0
             }
             function setDirection(id, dir) {
                 if (isAtUnit(id))
@@ -196,11 +198,9 @@
 
             // GAME LOOP
             var mypoch = 0;
-            function move() {
-                moveAllPeople();
-            }
             function updateSelf() {
                 if (isAtUnit(UUID)) {
+                    var olddir = getDir(UUID);
                     if (isDown(KEY_UP)) {
                         setDirection(UUID, NORTH);
                     } else if (isDown(KEY_DOWN)) {
@@ -210,6 +210,9 @@
                     } else if (isDown(KEY_LEFT)) {
                         setDirection(UUID, WEST);
                     }
+                    var dir = getDir(UUID);
+                    if (olddir != dir)
+                        notifyServer(mypoch, getX(UUID), getY(UUID), dir);
                 }
             }
             //EVENT STATS
@@ -219,7 +222,7 @@
             const eventLoop = setInterval(function() {
                 var d1 = Date.now();
                 updateSelf();
-                move();
+                moveAllPeople();
                 render();
                 mypoch++;
                 var d2 = Date.now() - d1;
