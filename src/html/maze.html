@@ -24,6 +24,13 @@
 
             // CONNECTION
             var socket = io();
+            function notifyServer(time, dir) {
+                socket.emit('direction', {
+                    user: UUID,
+                    direction: dir,
+                    mypoch: time
+                })
+            }
 
             // map management
             const MAP_PX_WIDTH = 300; // pixels; must sync with <canvas>
