@@ -9,7 +9,7 @@
             // GAME SETTINGS
             const UUID = 1;
             const FPS = 30;
-            const UNIT_SPEED = 200; // time to go 1 unit in ms
+            const UNIT_SPEED = 2000; // time to go 1 unit in ms
 
             // GAME GRAPHICS
             const SCALE = 20; // unit to px converter
@@ -92,14 +92,26 @@
             function getX(id) {
                 return people.get(id).x;
             }
+            function setX(id, xval) {
+                people.get(id).x = xval;
+            }
             function getY(id) {
                 return people.get(id).y;
+            }
+            function setY(id, yval) {
+                people.get(id).y = yval;
             }
             function getDir(id) {
                 return people.get(id).dir;
             }
+            function setDirRaw(id, dir) {
+                people.get(id).dir = dir;
+            }
             function getDist(id) { // distance in frames to next unit
                 return people.get(id).dist;
+            }
+            function setDist(id, dist) { // distance in frames to next unit
+                people.get(id).dist = dist;
             }
             function isAtUnit(id) {
                 var dist = getDist(id);
@@ -123,7 +135,27 @@
                     if (dir == WEST) people.get(id).x--;
                     people.get(id).dist %= UNIT_SPEED_FRAMES;
                 }
-
+            }
+            function updatePersonEvent(id, time, x, y, direction) {
+                 var timediff = mypoch - time;
+                 var majorLeap = Math.floor(timediff / UNIT_SPEED_FRAMES);
+                 var distRemainder = timediff % UNIT_SPEED_FRAMES;
+                 for (var i = 0; i < majorLeap; i++) {
+                     if (!isWall(x, y, direction)) {
+                         if (direction == NORTH) y--;
+                         if (direction == SOUTH) y++;
+                         if (direction == EAST) x++;
+                         if (direction == WEST) x--;
+                     }
+                 }
+                 setX(id, x);
+                 setY(id, y);
+                 setDirRaw(id, direction);
+                 if (!isWall(x, y)) {
+                     setDist(id, distRemainder);
+                 } else {
+                     setDist(id, 0);
+                 }
             }
             function moveAllPeople() {
                 movePerson(UUID);
