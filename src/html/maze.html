@@ -1,0 +1,224 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <canvas id="myCanvas" width="303" height="303"></canvas>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            // GAME SETTINGS
+            const UUID = 1;
+            const FPS = 30;
+            const UNIT_SPEED = 200; // time to go 1 unit in ms
+
+            // GAME GRAPHICS
+            const SCALE = 20; // unit to px converter
+            const PLAYER_SIZE = 5;
+
+            // CONSTANTS (AND INDEX FOR MAP)
+            const STILL = 9;
+            const NORTH = 0;
+            const SOUTH = 1;
+            const EAST = 2;
+            const WEST = 3;
+
+            // CONNECTION
+            var socket = io();
+
+            // map management
+            const MAP_PX_WIDTH = 300; // pixels; must sync with <canvas>
+            const MAP_PX_HEIGHT = 300; // pixels; must sync with <canvas>
+            const MAP_THICKNESS = 2; // in pixels
+            const MAP_SIZE_X = 5;
+            const MAP_SIZE_Y = 5;
+            const ZWIDTH = MAP_PX_WIDTH/SCALE;
+            const ZHEIGHT = MAP_PX_HEIGHT/SCALE;
+            var ZONE = {x: 0, y: 0 };
+            var GAMEMAP = [];
+            // GENERATE MAP
+            for (var x = 0; x < MAP_SIZE_X; x++) {
+                var column = [];
+                for (var y = 0; y < MAP_SIZE_Y; y++) {
+                    column.push([true, true, true, true]);
+                }
+                GAMEMAP.push(column);
+            }
+            function setPathway(x, y, dir) {
+                var x2 = x;
+                var y2 = y;
+                var dir2 = null;
+                if (dir == NORTH) { y2--; dir2 = SOUTH; }
+                if (dir == SOUTH) { y2++; dir2 = NORTH; }
+                if (dir == EAST) { x2++; dir2 = WEST; }
+                if (dir == WEST) { x2--; dir2 = EAST; }
+                GAMEMAP[x][y][dir] = false;
+                GAMEMAP[x2][y2][dir2] = false;
+            }
+            setPathway(0,0,SOUTH);
+            setPathway(0,1,SOUTH);
+            setPathway(0,1,EAST);
+            setPathway(1,1,EAST);
+            setPathway(2,1,NORTH);
+            setPathway(2,1,EAST);
+            setPathway(2,2,SOUTH);
+            setPathway(2,2,EAST);
+            setPathway(3,3,NORTH);
+            setPathway(3,3,WEST);
+            setPathway(0,2,SOUTH);
+            setPathway(1,1,SOUTH);
+            setPathway(1,2,SOUTH);
+            // MAP FUNCTIONS
+            function isWall(x, y, dir) {
+                if (dir == STILL) return true;
+                if (x >= MAP_SIZE_X || y >= MAP_SIZE_Y) return false
+                return GAMEMAP[x][y][dir];
+            }
+
+            // PEOPLE MANAGEMENT
+            var UNIT_SPEED_FRAMES = UNIT_SPEED*FPS/1000
+            var people = new Map();
+            function addPerson(id) {
+                people.set(UUID, {x: 0, y: 0, dir: STILL, dist: 0});
+            }
+            function getX(id) {
+                return people.get(id).x;
+            }
+            function getY(id) {
+                return people.get(id).y;
+            }
+            function getDir(id) {
+                return people.get(id).dir;
+            }
+            function getDist(id) { // distance in frames to next unit
+                return people.get(id).dist;
+            }
+            function isAtUnit(id) {
+                var dist = getDist(id);
+                return dist == UNIT_SPEED_FRAMES || dist == 0
+            }
+            function setDirection(id, dir) {
+                if (isAtUnit(id))
+                    if (!isWall(getX(id), getY(id), dir))
+                        people.get(id).dir = dir;
+            }
+            function movePerson(id) {
+                var x = getX(id);
+                var y = getY(id);
+                var dir = getDir(id);
+                if (!isWall(x, y, dir) && dir != STILL) people.get(id).dist++;
+                if (people.get(id).dist >= UNIT_SPEED_FRAMES) {
+                    var dir = people.get(id).dir;
+                    if (dir == NORTH) people.get(id).y--;
+                    if (dir == SOUTH) people.get(id).y++;
+                    if (dir == EAST) people.get(id).x++;
+                    if (dir == WEST) people.get(id).x--;
+                    people.get(id).dist %= UNIT_SPEED_FRAMES;
+                }
+
+            }
+            function moveAllPeople() {
+                movePerson(UUID);
+            }
+            addPerson(UUID);
+
+
+            // CONTROLLER
+            const KEY_SPACE = 32;
+            const KEY_UP = 38;
+            const KEY_LEFT = 37;
+            const KEY_DOWN = 40;
+            const KEY_RIGHT = 39;
+            var KeyboardMapper = { 38: NORTH, 40: SOUTH, 37: WEST, 39: EAST }
+            var keydown = {};
+            window.onkeyup = function(e) { keydown[e.keyCode] = false; }
+            window.onkeydown = function(e) { keydown[e.keyCode] = true; }
+            var isDown = (key) => keydown[key] == true;
+
+            // GRAPHICS
+            var canvas = document.getElementById("myCanvas");
+            var ctx = canvas.getContext("2d");
+            function drawPlayer(id) {
+                var xPx = getX(id)*SCALE+(SCALE/2),
+                    yPx = getY(id)*SCALE+(SCALE/2),
+                    dir = getDir(id),
+                    dist = getDist(id);
+                if (dir == NORTH) yPx -= dist/UNIT_SPEED_FRAMES*SCALE;
+                if (dir == SOUTH) yPx += dist/UNIT_SPEED_FRAMES*SCALE;
+                if (dir == EAST) xPx += dist/UNIT_SPEED_FRAMES*SCALE;
+                if (dir == WEST) xPx -= dist/UNIT_SPEED_FRAMES*SCALE;
+
+                ctx.beginPath();
+                ctx.arc(xPx, yPx, PLAYER_SIZE, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.stroke();
+            }
+            function drawMapWall(x, y, dir) {
+                ctx.beginPath();
+                if (dir == SOUTH) {
+                    ctx.moveTo(x*SCALE, (y+1)*SCALE);
+                    ctx.lineTo((x+1)*SCALE, (y+1)*SCALE);
+                } else if (dir == WEST) {
+                    ctx.moveTo(x*SCALE, y*SCALE);
+                    ctx.lineTo(x*SCALE, (y+1)*SCALE);
+                } else if (dir == NORTH) {
+                    ctx.moveTo(x*SCALE, y*SCALE);
+                    ctx.lineTo((x+1)*SCALE, y*SCALE);
+                } else if (dir == EAST) {
+                    ctx.moveTo((x+1)*SCALE, y*SCALE);
+                    ctx.lineTo((x+1)*SCALE, (y+1)*SCALE);
+                }
+                ctx.stroke();
+            }
+            function drawMapCell(x, y) {
+                if (isWall(x, y, NORTH) && y == 0) drawMapWall(x, y, NORTH);
+                if (isWall(x, y, SOUTH)) drawMapWall(x, y, SOUTH);
+                if (isWall(x, y, EAST)) drawMapWall(x, y, EAST);
+                if (isWall(x, y, WEST) && x == 0) drawMapWall(x, y, WEST);
+            }
+            function drawMap() {
+                for (var x = 0; x < ZWIDTH; x++)
+                    for (var y = 0; y < ZWIDTH; y++)
+                        drawMapCell(x, y);
+            }
+            function render() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawPlayer(UUID);
+                drawMap();
+            }
+
+
+            // GAME LOOP
+            var mypoch = 0;
+            function move() {
+                moveAllPeople();
+            }
+            function updateSelf() {
+                if (isAtUnit(UUID)) {
+                    if (isDown(KEY_UP)) {
+                        setDirection(UUID, NORTH);
+                    } else if (isDown(KEY_DOWN)) {
+                        setDirection(UUID, SOUTH);
+                    } else if (isDown(KEY_RIGHT)) {
+                        setDirection(UUID, EAST);
+                    } else if (isDown(KEY_LEFT)) {
+                        setDirection(UUID, WEST);
+                    }
+                }
+            }
+            //EVENT STATS
+            var avg = 0;
+            var max = 0;
+            // EVENT LOOP
+            const eventLoop = setInterval(function() {
+                var d1 = Date.now();
+                updateSelf();
+                move();
+                render();
+                mypoch++;
+                var d2 = Date.now() - d1;
+                avg = (avg*(mypoch-1) + d2)/mypoch;
+                max = Math.max(d2, max);
+            }, 1000/FPS);
+        </script>
+    </body>
+</html>
