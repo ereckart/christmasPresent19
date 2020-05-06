@@ -113,9 +113,9 @@ class Nonni {
                 return this.r2;
             case "r2a":
                 return this.r5;
-            case "r2a":
+            case "r1c":
                 return this.r3;
-            case "r3a":
+            case "r1b":
                 return this.r4;
             case "r6a":
                 return this.r4;
