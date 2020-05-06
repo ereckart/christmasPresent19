@@ -35,9 +35,19 @@ class Eegees {
     */	
     	if (!this.canEnter(player)) {
     		return this.getNoEnterMessage();
-    	} else {
+    	} else if (player.getNumbSandwiches() == 0) {
             return character.talk(player);
-        } 
+        } else if (player.getNumbSandwiches() == 1) {
+            return character.talk(player);
+        } else if (player.getNumbSandwiches() == 2) {
+            return character.talk(player);
+        } else if (player.getNumbSandwiches() == 3) {
+            return character.talk(player);
+        } else if (player.getNumbSandwiches() == 4) {
+            return character.talk(player);
+        } else if (player.getNumbSandwiches() == 5) {
+            return character.talk(player);
+        }
     }
 
     returnFromGame(player, character) {
