@@ -13,17 +13,29 @@ app.use(express.json());
 // people assets
 const Kevin = new (require('./core/Kevin'))();
 const Grandaddy = new (require('./core/Grandaddy'))();
+const Nonni = new (require('./core/Nonni'))();
+const Mickey = new (require('./core/Mickey'))();
+const Hayley = new (require('./core/Hayley'))();
 const characterMap = {
     'home': Kevin,
-    'theland': Grandaddy
+    'theland': Grandaddy,
+    'downtown': Nonni,
+    'eegees': Mickey,
+    'trb': Hayley
 }
 
 // location assets
 const Home = new (require('./core/Home'))();
 const TheLand = new (require('./core/TheLand'))();
+const Downtown = new (require('./core/Downtown'))();
+const Eegees = new (require('./core/Eegees'))();
+const TRB = new (require('./core/TRB'))();
 const placeMap = {
     'home': Home,
-    'theland': TheLand
+    'theland': TheLand,
+    'downtown': Downtown,
+    'eegees': Eegees,
+    'trb': TRB
 }
 
 // game data
