@@ -164,6 +164,7 @@ class Kevin {
         this.bribeCount = 0;
         this.metPlayers = [];
         this.location = "Home";
+        this.locationSecondary = "Home2";
     }
 
     getBribeCount() {
@@ -227,10 +228,13 @@ class Kevin {
                 return this.rGameEnd4;
             case "rBa":
                 player.addCoins(this.rBribe2.coins);
+                player.addLocationCompleted(this.locationSecondary);
                 return this.rBribe2;            
             case "rBb":
+                player.addLocationCompleted(this.locationSecondary);
                 return this.rBribe3; 
             case "rBc":
+                player.addLocationCompleted(this.locationSecondary);
                 return this.rBribe3; 
             case "r1":
                 return this.r1;

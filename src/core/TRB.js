@@ -24,10 +24,10 @@ class TRB {
             return true;
         } else if (player.ifLocComp("Home") && !player.gotWrongInfo() && !player.ifLocComp(this.getName())) {
             return true;
-        } else if (player.gotWrongInfo() && player.ifLocComp("TheLand") && !player.ifLocComp(this.getName())) {
+        } else if (player.gotWrongInfo() && player.ifLocComp("Home2") && !player.ifLocComp(this.getName())) {
             return true;
-        } else if (player.gotWrongInfo() && player.ifLocComp("Downtown") && !player.ifLocComp(this.getName())) {
-            return true;
+        // } else if (player.gotWrongInfo() && player.ifLocComp("Downtown") && !player.ifLocComp(this.getName())) {
+        //     return true;
         } else {
             return false;
         }

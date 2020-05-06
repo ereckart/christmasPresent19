@@ -39,6 +39,7 @@ class Hayley {
     constructor() {
         this.metPlayers = [];
         this.location = "TRB";
+        this.locationSecondary = "TRB2";
     }
 
     giveWrongInfo(player) {
@@ -61,6 +62,7 @@ class Hayley {
                 player.addLocationCompleted(this.location);
                 return this.rGameEnd2;
             case "rBribe":
+                player.addLocationCompleted(this.locationSecondary);
                 return this.rBribe;     
             default:
                 return this.r1;

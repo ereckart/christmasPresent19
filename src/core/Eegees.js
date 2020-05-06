@@ -22,7 +22,7 @@ class Eegees {
     */
         if (player.ifLocComp("TRB") && player.gotWrongInfo() && !player.ifLocComp(this.getName())) {
             return true;
-        } else if (player.ifLocComp("Downtown") && !player.gotWrongInfo() && !player.ifLocComp(this.getName())) {
+        } else if (player.ifLocComp("TRB2") && !player.gotWrongInfo() && !player.ifLocComp(this.getName())) {
             return true;
         } else {
             return false;
