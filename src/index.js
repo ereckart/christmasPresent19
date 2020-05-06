@@ -82,7 +82,7 @@ io.on('connection', (client) => {
     client.on('returningFromGame', (data) => {
         let uuid = data.uuid;
         let result = data.result;
-        const reply = place.returnFromGame(player, character);
+        const reply = place.returnFromGame(player, character, result);
         client.emit('reply', reply);
         client.emit('playerMeta', getPlayerMeta(player));
     })

@@ -46,7 +46,7 @@ class TRB {
         }
     }
 
-    returnFromGame(player, character) {
+    returnFromGame(player, character, result) {
         if (player.determinePath() == 0) {
             return character.talk(player, "rGameEnd1");
         } else {

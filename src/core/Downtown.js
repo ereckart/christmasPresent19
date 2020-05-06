@@ -44,7 +44,7 @@ class Downtown {
         }
     }
 
-    returnFromGame(player, character) {
+    returnFromGame(player, character, result) {
         if (player.determinePath() == 0) {
             return character.talk(player, "rEndGame1");
         } else if (player.determinePath() == 1) {

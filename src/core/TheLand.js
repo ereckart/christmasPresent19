@@ -40,21 +40,30 @@ class TheLand {
         } 
     }
 
-    returnFromGame(player, character) {
+    returnFromGame(player, character, result) {
         // need a way to determine if the player won or not
         //IF THE PLAYER LOST
         if (player.determinePath() == 0) {
             //IF THE PLAYER WON
-            //return character.talk(player, "rGameEnd1");
-            return character.talk(player, "rGameEnd4");
+            if (result.localeCompare('won') == 0) {
+                return character.talk(player, "rGameEnd1");
+            } else {
+                return character.talk(player, "rGameEnd4");
+            }
         } else if (player.determinePath() == 1) {
             //IF THE PLAYER WON
-            //return character.talk(player, "rGameEnd1");
-            return character.talk(player, "rGameEnd5");
+            if (result.localeCompare('won') == 0) {
+                return character.talk(player, "rGameEnd1");
+            } else { 
+                return character.talk(player, "rGameEnd5");
+            }
         } else {
             //IF THE PLAYER WON
-            //return character.talk(player, "rGameEnd1");
-            return character.talk(player, "rGameEnd6");
+            if (result.localeCompare('won') == 0) {
+                return character.talk(player, "rGameEnd1");
+            } else {
+                return character.talk(player, "rGameEnd6");
+            }
         }
     }
 

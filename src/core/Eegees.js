@@ -44,7 +44,7 @@ class Eegees {
         } 
     }
 
-    returnFromGame(player, character) {
+    returnFromGame(player, character, result) {
         if (player.getNumbSandwiches == 0) {
             return character.talk(player, "r10");
         } else if (player.getNumbSandwiches() == 1) {
