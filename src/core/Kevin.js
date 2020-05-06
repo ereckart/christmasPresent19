@@ -161,13 +161,21 @@ class Kevin {
         }
 
     constructor() {
-        this.bribed = false;
+        this.bribeCount = 0;
         this.metPlayers = [];
         this.location = "Home";
     }
 
+    getBribeCount() {
+        return this.bribeCount;
+    }
+
     giveBribe(player) {
-        this.bribed = true;
+        this.bribeCount += 1;
+    }
+
+    giveWrongInfo(player) {
+        this.bribeCount -= 1;
     }
 
     getMetPlayers() {
@@ -203,15 +211,19 @@ class Kevin {
                 player.addCoins(this.rGameEnd3.coins);
                 player.setBribedKevin(true);
                 this.giveBribe(player);
+                player.addLocationCompleted(this.location);
                 return this.rGameEnd3;
             case "rG1b":
+                player.addLocationCompleted(this.location);
                 return this.rGameEnd4;
             case "rG2a":
                 player.addCoins(this.rGameEnd3.coins);
                 player.setBribedKevin(true);
                 this.giveBribe(player);
+                player.addLocationCompleted(this.location);
                 return this.rGameEnd3;
             case "rG2b":
+                player.addLocationCompleted(this.location);
                 return this.rGameEnd4;
             case "rBa":
                 player.addCoins(this.rBribe2.coins);
@@ -227,6 +239,7 @@ class Kevin {
             case "rGameEnd1":
                 return this.rGameEnd1;
             case "rGameEnd2":
+                this.giveWrongInfo(player);
                 return this.rGameEnd2;
             case "rBribe":
                 return this.rBribe;         

@@ -41,6 +41,17 @@ class Home {
             return character.talk(player, "r4")
         }
     }
-    
+
+    // goToGame() {
+    //     return "Going to Game."
+    // }
+
+    // returnFromGame(player, character) {
+    //     if (this.character.getBribeCount() > 0) {
+    //         return character.talk(player, "rGameEnd2");
+    //     } else {
+    //         return character.talk(player, "rGameEnd1");
+    //     }
+    // }
 }
 module.exports = Home;
