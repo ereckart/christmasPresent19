@@ -46,11 +46,11 @@ class Downtown {
 
     returnFromGame(player, character) {
         if (player.determinePath() == 0) {
-            return character.talk(player, "rGameEnd1");
+            return character.talk(player, "rEndGame1");
         } else if (player.determinePath() == 1) {
-            return character.talk(player, "rGameEnd2");
+            return character.talk(player, "rEndGame2");
         } else {
-            return character.talk(player, "rGameEnd3");
+            return character.talk(player, "rEndGame3");
         }
     }
 }
