@@ -110,6 +110,7 @@ class Nonni {
         }
         switch(option) {  
             case "r1a":
+                player.addItem("LiquidCourage");
                 return this.r2;
             case "r2a":
                 return this.r5;

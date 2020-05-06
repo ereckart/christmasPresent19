@@ -90,12 +90,15 @@ class Grandaddy {
         switch(option) {
             case "rG1a":
                 player.addLocationCompleted(this.location);
+                player.addItem("GunOfDestiny");
                 return this.r2;
             case "rG2a":
                 player.addLocationCompleted(this.location);
+                player.addItem("GunOfDestiny");
                 return this.r2;
             case "rG3a":
                 player.addLocationCompleted(this.location);
+                player.addItem("GunOfDestiny");
                 return this.r2;
             case "rGameEnd1":
                 return this.rGameEnd1;
