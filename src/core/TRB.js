@@ -20,7 +20,9 @@ class TRB {
     /* Checks if player can enter this location at this time.
     	param player: player object, player who enters
     */
-        if (player.ifLocComp(this.getName()) && !player.gotWrongInfo() && player.ifLocComp("Downtown")) {
+        if (player.ifLocComp("TRB2")) {
+            return false;
+        } else if (player.ifLocComp(this.getName()) && !player.gotWrongInfo() && player.ifLocComp("Downtown")) {
             return true;
         } else if (player.ifLocComp("Home") && !player.gotWrongInfo() && !player.ifLocComp(this.getName())) {
             return true;
