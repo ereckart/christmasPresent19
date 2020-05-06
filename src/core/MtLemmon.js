@@ -1,4 +1,5 @@
 const Player = require('./player')
+const Character = require('./MtLemmonCharacter')
 
 class MtLemmon {
 
