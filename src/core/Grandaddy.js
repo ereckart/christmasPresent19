@@ -14,26 +14,33 @@ class Grandaddy {
 
     rGameEnd1 = {
         dialogue: "Holy shit I actually did it. I actually sold the land! I'll give you a share of the money. And you can keep the gun, but you didn't get it from me, alright? Oh and I don't know where Liz is, she didn't come here, but she did tell me last night, 'I want to see mountains, Dad, mountains!'",
-        responseOptions: {},
+        responseOptions: {
+            "rG1a": "Next"
+        },
         convEnd: false,
         game: false,
         coins: 0
     }
     rGameEnd2 = {
         dialogue: "Holy shit I actually did it. I actually sold the land! I'll give you a share of the money. And you can keep the gun, but you didn't get it from me, alright? Oh and I don't know anything about Liz, she didn't come here - I would go ask Kevin.",
-        responseOptions: {},
+        responseOptions: {
+            "rG2a": "Next"
+        },
         convEnd: false,
         game: false,
         coins: 0
     }
     rGameEnd3 = {
         dialogue: "Holy shit I actually did it. I actually sold the land! I'll give you a share of the money. And you can keep the gun, but you didn't get it from me, alright? Oh and Liz didn't come here, but I think she said something last night about getting a 'real' margarita?",
-        responseOptions: {},
+        responseOptions: {
+            "rG3a": "Next"
+        },
         convEnd: false,
         game: false,
         coins: 0
     }
 
+    // response to rG1a, rG2a, rG3a
     r2 = {
         dialogue: "Earned 10 coins. Gun of Destiny: The more protection the better.",
         responseOptions: {},
@@ -81,15 +88,21 @@ class Grandaddy {
             this.metPlayers.push(player.getName());
         }
         switch(option) {
+            case "rG1a":
+                player.addLocationCompleted(this.location);
+                return this.r2;
+            case "rG2a":
+                player.addLocationCompleted(this.location);
+                return this.r2;
+            case "rG3a":
+                player.addLocationCompleted(this.location);
+                return this.r2;
             case "rGameEnd1":
-                player.addLocationCompleted(this.location);
-                return this.r2;
+                return this.rGameEnd1;
             case "rGameEnd2":
-                player.addLocationCompleted(this.location);
-                return this.r2;
+                return this.rGameEnd2;
             case "rGameEnd3":
-                player.addLocationCompleted(this.location);
-                return this.r2;
+                return this.rGameEnd3;
             case "rGameEnd4":
                 player.addLocationCompleted(this.location);
                 return this.rGameEnd4;                
