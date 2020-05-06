@@ -43,7 +43,7 @@ class Home {
     }
 
     returnFromGame(player, character) {
-        if (this.character.getBribeCount() > 0) {
+        if (character.getBribeCount() > 0) {
             return character.talk(player, "rGameEnd2");
         } else {
             return character.talk(player, "rGameEnd1");
