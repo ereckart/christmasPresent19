@@ -59,6 +59,16 @@
             function goToMap() {
                 window.location.href="/<%= player %>/map";
             }
+            function pollForMyMeta() {
+                socket.emit('getMyMeta');
+            }
+            socket.on('playerMeta', (reply) => renderPlayerMeta(reply));
+            function renderPlayerMeta(meta) {
+                document.getElementById("coinCount").innerHTML = meta.coins;
+            }
+            window.setInterval(function(){
+              pollForMyMeta();
+            }, 5000);
         </script>
         <style>
             button.dialogReply, button {
@@ -75,6 +85,10 @@
     <body>
         <h1 style="display: inline-block;"><%= place.toUpperCase() %></h1>
         <a href="/<%= player %>/map" style="float: right;">GO TO MAP</a>
+        <span style="float:right; margin: 5px 20px;">
+            <b>COINS: </b>
+            <span id="coinCount"></span>
+        </span>
         <hr>
         <div id="dialogBox">
         </div>

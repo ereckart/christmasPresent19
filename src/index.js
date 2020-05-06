@@ -49,7 +49,12 @@ function announcement(msg) {
 
 
 
-
+function getPlayerMeta(player) {
+    const bank = player.getBank();
+    return {
+        'coins': bank
+    }
+}
 
 app.get('/:player/map', function(req, res){
     res.render('map', {
@@ -67,17 +72,23 @@ io.on('connection', (client) => {
     client.on('talk', (resp) => {
         const reply = character.talk(player, resp);
         client.emit('reply', reply);
+        client.emit('playerMeta', getPlayerMeta(player));
     });
     client.on('enterLocation', (uuid) => {
         const reply = place.enterLocation(player, character);
         client.emit('reply', reply);
+        client.emit('playerMeta', getPlayerMeta(player));
     });
     client.on('returningFromGame', (data) => {
         let uuid = data.uuid;
         let result = data.result;
         const reply = place.returnFromGame(player, character);
         client.emit('reply', reply);
+        client.emit('playerMeta', getPlayerMeta(player));
     })
+    client.on('getMyMeta', () => {
+        client.emit('playerMeta', getPlayerMeta(player));
+    });
 });
 app.get('/:player/:place', function(req, res){
     res.render('genericLocationPage', {
