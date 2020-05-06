@@ -1,13 +1,17 @@
 const Item = require('./item')
-const Location = require('./location')
+//const Location = require('./Home')
 
 class Player {
 
     constructor(playerName) {
         this.playerName = playerName;
         this.inventory = [];
+        this.locationsCompleted = [];
         this.bank = 20;
-        this.placesVisited = [];
+        this.bribedKevin = false;
+        this.wrongInfo = false; //true if player on receiving end of Kevin's bribe
+        this.bribedMickey = false;
+        this.harderInfo = false; //true if player on receiving end of Mickey's bribe
     }
 
     getName() {
@@ -30,8 +34,12 @@ class Player {
     	return this.bank;
     }
 
-    addLocationVisited(location) {
-    	this.placesVisited.push(location.getName());
+    gotWrongInfo() {
+    	return this.wrongInfo;
+    }
+
+    addLocationCompleted(locationName) {
+    	this.locationsCompleted.push(locationName);
     }
 
     addItem(item) {
@@ -55,6 +63,22 @@ class Player {
     	this.bank -= coinAmount;
     }
 
+    setBribedKevin(bribed) {
+    	this.bribedKevin = bribed;
+    }
+
+    setBribedMickey(bribed) {
+    	this.bribedMickey = bribed;
+    }
+
+    setWrongInfo(bribed) {
+    	this.wrongInfo = bribed;
+    }
+
+    setHarderInfo(bribed) {
+    	this.harderInfo = bribed;
+    }
+
     hasItem(itemName) {
     /* Determines if player has a certain item.
     	param itemName: string, name of item
@@ -64,6 +88,14 @@ class Player {
    		} else {
    			return true;
    		}
+    }
+
+    ifLocComp(locationName) {
+    	if (this.locationsCompleted.indexOf(locationName) == -1) {
+    		return false;
+    	} else {
+    		return true;
+    	}
     }
 
 }
