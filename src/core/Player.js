@@ -39,8 +39,16 @@ class Player {
         return this.sandwichesBought;
     }
 
+    getBribedKevin() {
+        return this.bribedKevin;
+    }
+
     gotWrongInfo() {
     	return this.wrongInfo;
+    }
+
+    gotHarderInfo() {
+        return this.harderInfo;
     }
 
     addLocationCompleted(locationName) {
@@ -92,20 +100,22 @@ class Player {
     /* Determines if player has a certain item.
     	param itemName: string, name of item
     */
-   		if (getInventoryNames().indexOf(itemName) == -1) {
-   			return false;
-   		} else {
-   			return true;
-   		}
+   		return this.getInventoryNames().includes(itemName);
     }
 
     ifLocComp(locationName) {
-    	if (this.locationsCompleted.indexOf(locationName) == -1) {
-    		return false;
-    	} else {
-    		return true;
-    	}
+    	return this.locationsCompleted.includes(locationName);
     }
 
+    determinePath() {
+    //returns 0 for path a, 1 for path b, and 2 for path c
+        if (!this.gotWrongInfo()) {
+            return 0;
+        } else if (!this.getBribedKevin()) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
 }
 module.exports = Player;

@@ -140,14 +140,23 @@ class Mickey {
     constructor() {
         this.metPlayers = [];
         this.location = "Eegees";
+        this.bribeCount = 0;
+    }
+
+    giveBribe() {
+        this.bribeCount += 1;
     }
 
     giveWrongInfo(player) {
-        return false;
+        this.bribeCount -= 1; 
     }
 
     getMetPlayers() {
         return this.metPlayers;
+    }
+
+    getBribeCount() {
+        return this.bribeCount;
     }
 
     talk(player, option) {
@@ -156,44 +165,90 @@ class Mickey {
         }
         switch(option) {   
             case "r1a":
+                player.addCoins(this.r4.coins);
+                player.boughtSandwich();
                 return this.r4;
             case "r1b":
                 return this.r3;
             case "r1c":
+                player.addCoins(this.r2.coins);
                 return this.r2;
             case "r4a":
+                player.addCoins(this.r5.coins);
+                //check if Mickey has been bribed by other players
+                if (character.getBribeCount() > 0) {
+                    player.setHarderInfo(true);
+                    this.giveWrongInfo();
+                }
+                player.boughtSandwich();
                 return this.r5;
             case "r4b":
                 return this.r3;
             case "r5a":
-                // need to add path variations ie r7 r8
-                return this.r6;
+                player.addCoins(-10);
+                player.boughtSandwich();
+                if (!player.gotHarderInfo()) {
+                    if (player.determinePath()==0) {
+                        //path a
+                        return this.r6;
+                    } else if (player.determinePath()==1) {
+                        //path b
+                        return this.r7;
+                    } else {
+                        //path c
+                        return this.r8;
+                    }
+                } else {
+                    return this.r9;
+                }
             case "r5b":
                 return this.r3;
             case "r6a":
+                player.addCoins(this.r12.coins);
+                this.giveBribe();
+                player.setBribedMickey(true);
                 return this.r12;
             case "r6b":
                 return this.r3;
             case "r6c":
                 return this.r11;
             case "r7a":
+                player.addCoins(this.r12.coins);
+                this.giveBribe();
+                player.setBribedMickey(true);
                 return this.r12;
             case "r7b":
                 return this.r3;                
             case "r7c":
                 return this.r11;
             case "r8a":
+                player.addCoins(this.r12.coins);
+                this.giveBribe();
+                player.setBribedMickey(true);
                 return this.r12;
             case "r8b":
                 return this.r3;
             case "r8c":
                 return this.r11;
             case "r9a":
+                player.addCoins(-10);
+                player.boughtSandwich();
                 // need to add path variations ie r7 r8
-                return this.r6;
+                if (player.determinePath()==0) {
+                    //path a
+                    return this.r6;
+                } else if (player.determinePath()==1) {
+                    //path b
+                    return this.r7;
+                } else {
+                    //path c
+                    return this.r8;
+                }
             case "r9b":
                 return this.r3;
             case "r10a":
+                player.addCoins(this.r4.coins);
+                player.boughtSandwich();
                 return this.r4;
             case "r10b":
                 return this.r3;

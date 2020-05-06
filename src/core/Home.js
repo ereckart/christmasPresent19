@@ -20,9 +20,15 @@ class Home {
     /* Checks if player can enter this location at this time.
     	param player: player object, player who enters
     */
-        if (player.ifLocComp(this.getName())) {
+        if (player.ifLocComp(this.getName()) && !player.gotWrongInfo()) {
             return false;
-        } else {
+        } else if (player.ifLocComp(this.getName()) && player.gotWrongInfo()) {
+            if ((!player.getBribedKevin() && player.ifLocComp("TheLand")) || (player.getBribedKevin() && player.ifLocComp("Downtown"))) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (!player.ifLocComp(this.getName())) {
             return true;
         }
     }
