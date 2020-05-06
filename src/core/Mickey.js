@@ -258,6 +258,8 @@ class Mickey {
                 return this.r4;
             case "r10b":
                 return this.r3;
+            case "r10":
+                return this.r10;
             default:
                 return this.r1;
         }
