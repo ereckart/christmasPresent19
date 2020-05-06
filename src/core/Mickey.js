@@ -176,7 +176,7 @@ class Mickey {
             case "r4a":
                 player.addCoins(this.r5.coins);
                 //check if Mickey has been bribed by other players
-                if (character.getBribeCount() > 0) {
+                if (this.getBribeCount() > 0) {
                     player.setHarderInfo(true);
                     this.giveWrongInfo();
                 }
