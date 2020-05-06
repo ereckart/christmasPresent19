@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>Reckart Game 2020</title>
+        <script src="/js/location-<%= place %>.js" type="text/js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var myId = "<%= player %>";
+            var place = "<%= place %>";
+            var socket = io('/?userId=' + myId + '&place=' + place);
+            socket.on('reply', (reply) => renderReply(reply));
+            function say(option) {
+                socket.emit('talk', option);
+            }
+            function renderReply(reply) {
+                if (typeof reply == "string") {
+                    document.getElementById("dialogBox").innerHTML = `
+                        <i>${reply}</i>
+                    `
+                    return;
+                }
+                if (reply.convEnd && !reply.game) {
+                    document.getElementById("dialogBox").innerHTML = `
+                        ${reply.dialogue}<br><br>
+                        <button onclick="goToMap()">Continue on quest</button>
+                    `
+                    return;
+                }
+                document.getElementById("dialogBox").innerHTML = "";
+                if (reply.dialogue != null)
+                    document.getElementById("dialogBox").innerHTML += `
+                        ${reply.dialogue}
+                        <br><br>
+                    `
+                if (reply.responseOptions != null)
+                    for (var option in reply.responseOptions) {
+                        var buttonAction = `say('${option}')`;
+                        if (reply.game) buttonAction = "playGame()";
+                        document.getElementById("dialogBox").innerHTML += `
+                            <button onclick="${buttonAction}" class="dialogReply">
+                                ${reply.responseOptions[option]}
+                            </button><br>
+                        `
+                    }
+
+            }
+            function playGame() {
+                window.location.href = place + "/game";
+            }
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('returningFromGame') != null) {
+                socket.emit('returningFromGame', {
+                    'uuid':  urlParams.get('uuid'),
+                    'result':  urlParams.get('returningFromGame')
+                });
+            } else {
+                socket.emit('enterLocation', urlParams.get('uuid'));
+            }
+            function goToMap() {
+                window.location.href="/<%= player %>/map";
+            }
+        </script>
+        <style>
+            button.dialogReply, button {
+                border: 1px solid black;
+                border-radius: 5px;
+                padding: 5px 10px;
+                line-height: 18px;
+                margin: 5px;
+                background-color: #f3f3f3;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 style="display: inline-block;"><%= place.toUpperCase() %></h1>
+        <a href="/<%= player %>/map" style="float: right;">GO TO MAP</a>
+        <hr>
+        <div id="dialogBox">
+        </div>
+    </body>
+</html>
