@@ -16,12 +16,14 @@ const Grandaddy = new (require('./core/Grandaddy'))();
 const Nonni = new (require('./core/Nonni'))();
 const Mickey = new (require('./core/Mickey'))();
 const Hayley = new (require('./core/Hayley'))();
+const MtLemmonCharacter = new (require('./core/MtLemmonCharacter'))();
 const characterMap = {
     'home': Kevin,
     'theland': Grandaddy,
     'downtown': Nonni,
     'eegees': Mickey,
-    'trb': Hayley
+    'trb': Hayley,
+    'mtlemmon': MtLemmonCharacter
 }
 
 // location assets
@@ -30,12 +32,14 @@ const TheLand = new (require('./core/TheLand'))();
 const Downtown = new (require('./core/Downtown'))();
 const Eegees = new (require('./core/Eegees'))();
 const TRB = new (require('./core/TRB'))();
+const MtLemmon = new(require('./core/TRB'))();
 const placeMap = {
     'home': Home,
     'theland': TheLand,
     'downtown': Downtown,
     'eegees': Eegees,
-    'trb': TRB
+    'trb': TRB,
+    'mtlemmon': MtLemmon
 }
 
 // game data
