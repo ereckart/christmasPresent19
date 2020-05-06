@@ -207,28 +207,34 @@ class Mickey {
                 player.addCoins(this.r12.coins);
                 this.giveBribe();
                 player.setBribedMickey(true);
+                player.addLocationCompleted(this.location);
                 return this.r12;
             case "r6b":
                 return this.r3;
             case "r6c":
+                player.addLocationCompleted(this.location);
                 return this.r11;
             case "r7a":
                 player.addCoins(this.r12.coins);
                 this.giveBribe();
                 player.setBribedMickey(true);
+                player.addLocationCompleted(this.location);
                 return this.r12;
             case "r7b":
                 return this.r3;                
             case "r7c":
+                player.addLocationCompleted(this.location);
                 return this.r11;
             case "r8a":
                 player.addCoins(this.r12.coins);
                 this.giveBribe();
                 player.setBribedMickey(true);
+                player.addLocationCompleted(this.location);
                 return this.r12;
             case "r8b":
                 return this.r3;
             case "r8c":
+                player.addLocationCompleted(this.location);
                 return this.r11;
             case "r9a":
                 player.addCoins(-10);

@@ -126,10 +126,13 @@ class Nonni {
             case "r6":
                 return this.r6;
             case "rEndGame1":
+                player.addLocationCompleted(this.location);
                 return this.rEndGame1;
             case "rEndGame2":
+                player.addLocationCompleted(this.location);
                 return this.rEndGame2;
             case "rEndGame3":
+                player.addLocationCompleted(this.location);
                 return this.rEndGame3;
             default:
                 return this.r1;

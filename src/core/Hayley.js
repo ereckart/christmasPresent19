@@ -55,8 +55,10 @@ class Hayley {
         }
         switch(option) {
             case "rGameEnd1":
+                player.addLocationCompleted(this.location);
                 return this.rGameEnd1;
             case "rGameEnd2":
+                player.addLocationCompleted(this.location);
                 return this.rGameEnd2;
             case "rBribe":
                 return this.rBribe;     

@@ -82,16 +82,22 @@ class Grandaddy {
         }
         switch(option) {
             case "rGameEnd1":
+                player.addLocationCompleted(this.location);
                 return this.r2;
             case "rGameEnd2":
+                player.addLocationCompleted(this.location);
                 return this.r2;
             case "rGameEnd3":
+                player.addLocationCompleted(this.location);
                 return this.r2;
             case "rGameEnd4":
+                player.addLocationCompleted(this.location);
                 return this.rGameEnd4;                
             case "rGameEnd5":
+                player.addLocationCompleted(this.location);
                 return this.rGameEnd5;
             case "rGameEnd6":
+                player.addLocationCompleted(this.location);
                 return this.rGameEnd6;
             case "rBribe":
                 return this.rBribe;     
