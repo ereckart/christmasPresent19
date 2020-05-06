@@ -31,6 +31,10 @@ class Player {
     	return names;
     }
 
+    getLocationsCompleted() {
+        return this.locationsCompleted;
+    }
+
     getBank() {
     	return this.bank;
     }
