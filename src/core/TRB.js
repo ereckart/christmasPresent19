@@ -47,7 +47,12 @@ class TRB {
     }
 
     returnFromGame(player, character) {
-        return character.talk(player);
+        if (player.determinePath() == 0) {
+            return character.talk(player, "rGameEnd1");
+        } else {
+            return character.talk(player, "rGameEnd2");
+        }
+        
     }
 }
 module.exports = TRB;
