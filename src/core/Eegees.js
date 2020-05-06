@@ -5,7 +5,7 @@ class Eegees {
 
     constructor() {
         this.locationName = "Eegees";
-        this.noEnterMessage = "";
+        this.noEnterMessage = "Looks like it's closed. Try coming back at a later time.";
     }
 
     getName() {
@@ -39,5 +39,10 @@ class Eegees {
             return character.talk(player);
         } 
     }
+
+    returnFromGame(player, character) {
+        return character.talk(player);
+    }
+
 }
 module.exports = Eegees;

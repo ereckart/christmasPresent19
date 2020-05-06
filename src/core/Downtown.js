@@ -5,7 +5,7 @@ class Downtown {
 
     constructor() {
         this.locationName = "Downtown";
-        this.noEnterMessage = "";
+        this.noEnterMessage = "Looks like all the bars are closed. Try coming back at a later time.";
     }
 
     getName() {
@@ -20,9 +20,11 @@ class Downtown {
     /* Checks if player can enter this location at this time.
     	param player: player object, player who enters
     */
-        if (player.ifLocComp("Home") && player.gotWrongInfo() && !player.ifLocComp(this.getName())) {
+        if (player.ifLocComp("TRB") && !player.ifLocComp(this.getName()) && !player.gotWrongInfo()) {
             return true;
-        } else if (player.ifLocComp("Eegees") && !player.gotWrongInfo() && !player.ifLocComp(this.getName())) {
+        } else if (player.ifLocComp("Eegees") && !player.ifLocComp(this.getName()) && player.gotWrongInfo()) {
+            return true;
+        } else if (player.ifLocComp("TheLand") && !player.ifLocComp(this.getName()) && player.gotWrongInfo()) {
             return true;
         } else {
             return false;
@@ -35,9 +37,15 @@ class Downtown {
     */	
     	if (!this.canEnter(player)) {
     		return this.getNoEnterMessage();
-    	} else {
+    	} else if (!character.getMetPlayers().includes(player.getName())) {
             return character.talk(player);
-        } 
+        } else {
+            return character.talk(player, "r6");
+        }
+    }
+
+    returnFromGame(player, character) {
+        return character.talk(player);
     }
 }
 module.exports = Downtown;

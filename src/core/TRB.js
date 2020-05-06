@@ -46,16 +46,8 @@ class TRB {
         }
     }
 
-    // goToGame() {
-    //     return "Going to Game."
-    // }
-
-    // returnFromGame(player, character) {
-    //     if (this.character.getBribeCount() > 0) {
-    //         return character.talk(player, "rGameEnd2");
-    //     } else {
-    //         return character.talk(player, "rGameEnd1");
-    //     }
-    // }
+    returnFromGame(player, character) {
+        return character.talk(player);
+    }
 }
 module.exports = TRB;

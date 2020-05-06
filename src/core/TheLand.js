@@ -39,5 +39,10 @@ class TheLand {
             return character.talk(player);
         } 
     }
+
+    returnFromGame(player, character) {
+        return character.talk(player);
+    }
+
 }
 module.exports = TheLand;

@@ -10,6 +10,7 @@ class Player {
         this.bank = 20;
         this.bribedKevin = false;
         this.wrongInfo = false; //true if player on receiving end of Kevin's bribe
+        this.sandwichesBought = 0;
         this.bribedMickey = false;
         this.harderInfo = false; //true if player on receiving end of Mickey's bribe
     }
@@ -32,6 +33,10 @@ class Player {
 
     getBank() {
     	return this.bank;
+    }
+
+    getNumbSandwiches() {
+        return this.sandwichesBought;
     }
 
     gotWrongInfo() {
@@ -61,6 +66,10 @@ class Player {
 		param coinAmount: int, number of coins to remove
     */
     	this.bank -= coinAmount;
+    }
+
+    boughtSandwich() {
+        this.sandwichesBought += 1;
     }
 
     setBribedKevin(bribed) {
