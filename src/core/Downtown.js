@@ -45,7 +45,13 @@ class Downtown {
     }
 
     returnFromGame(player, character) {
-        return character.talk(player);
+        if (player.determinePath() == 0) {
+            return character.talk(player, "rGameEnd1");
+        } else if (player.determinePath() == 1) {
+            return character.talk(player, "rGameEnd2");
+        } else {
+            return character.talk(player, "rGameEnd3");
+        }
     }
 }
 module.exports = Downtown;
