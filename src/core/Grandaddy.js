@@ -91,14 +91,17 @@ class Grandaddy {
             case "rG1a":
                 player.addLocationCompleted(this.location);
                 player.addItem("GunOfDestiny");
+                player.addCoins(this.r2.coins);
                 return this.r2;
             case "rG2a":
                 player.addLocationCompleted(this.location);
                 player.addItem("GunOfDestiny");
+                player.addCoins(this.r2.coins);
                 return this.r2;
             case "rG3a":
                 player.addLocationCompleted(this.location);
                 player.addItem("GunOfDestiny");
+                player.addCoins(this.r2.coins);
                 return this.r2;
             case "rGameEnd1":
                 return this.rGameEnd1;
@@ -108,12 +111,15 @@ class Grandaddy {
                 return this.rGameEnd3;
             case "rGameEnd4":
                 player.addLocationCompleted(this.location);
+                player.addCoins(this.rGameEnd4.coins);
                 return this.rGameEnd4;                
             case "rGameEnd5":
                 player.addLocationCompleted(this.location);
+                player.addCoins(this.rGameEnd5.coins);
                 return this.rGameEnd5;
             case "rGameEnd6":
                 player.addLocationCompleted(this.location);
+                player.addCoins(this.rGameEnd6.coins);
                 return this.rGameEnd6;
             case "rBribe":
                 return this.rBribe;     
