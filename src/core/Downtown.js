@@ -20,15 +20,23 @@ class Downtown {
     /* Checks if player can enter this location at this time.
     	param player: player object, player who enters
     */
-        if (player.ifLocComp("TRB") && !player.ifLocComp(this.getName()) && !player.gotWrongInfo()) {
-            return true;
-        } else if (player.ifLocComp("Eegees") && !player.ifLocComp(this.getName()) && player.gotWrongInfo()) {
-            return true;
-        } else if (player.ifLocComp("TheLand") && !player.ifLocComp(this.getName()) && player.gotWrongInfo()) {
-            return true;
+        if (!player.ifLocComp(this.getName())) {
+            if (player.ifLocComp("TRB") && (player.determinePath()==0)) {
+                // path a
+                return true;
+            } else if (player.ifLocComp("Eegees") && (player.determinePath()==1)) {
+                // path b
+                return true;
+            } else if (player.ifLocComp("TheLand") && (player.determinePath()==2)) {
+                // path c
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
+
     }
 
     enterLocation(player, character) {

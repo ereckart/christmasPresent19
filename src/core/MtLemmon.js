@@ -21,7 +21,6 @@ class MtLemmon {
     	param player: player object, player who enters
     */
         if (player.getLocationsCompleted().length == 6) {
-            console.log(player.getLocationsCompleted());
             return true;
         } else {
             return false;
