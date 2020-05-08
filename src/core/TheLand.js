@@ -53,14 +53,14 @@ class TheLand {
         } else if (player.determinePath() == 1) {
             //IF THE PLAYER WON
             if (result.localeCompare('won') == 0) {
-                return character.talk(player, "rGameEnd1");
+                return character.talk(player, "rGameEnd2");
             } else { 
                 return character.talk(player, "rGameEnd5");
             }
         } else {
             //IF THE PLAYER WON
             if (result.localeCompare('won') == 0) {
-                return character.talk(player, "rGameEnd1");
+                return character.talk(player, "rGameEnd3");
             } else {
                 return character.talk(player, "rGameEnd6");
             }
