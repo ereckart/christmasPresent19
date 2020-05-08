@@ -244,6 +244,7 @@ class Kevin {
                 return this.rGameEnd1;
             case "rGameEnd2":
                 this.giveWrongInfo(player);
+                player.setWrongInfo(true);
                 return this.rGameEnd2;
             case "rBribe":
                 return this.rBribe;         
