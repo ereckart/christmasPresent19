@@ -5,6 +5,7 @@ var io = require('socket.io')(http);
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.use(express.static('assets'));
 app.use(express.urlencoded());
 app.use(express.json());
 
