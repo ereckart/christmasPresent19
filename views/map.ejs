@@ -134,11 +134,12 @@
             playerAnimation.right[3].src = "/characterAnimations/angie/angieWalkRight-3.png";
             requestAnimationFrame(drawMap);
         }
+        var aniSet = playerAnimation.down;
         function drawCharacter() {
-            var aniSet = playerAnimation.down;
             if (playerDirX > 0) aniSet = playerAnimation.right;
             if (playerDirX < 0) aniSet = playerAnimation.left;
             if (playerDirY < 0) aniSet = playerAnimation.up;
+            if (playerDirY > 0) aniSet = playerAnimation.down;
             var frameNumber = Math.floor(playerFrame/animationFrameStick) % aniSet.length;
             ctx.drawImage(aniSet[frameNumber], playerX, playerY);
             var walking = updateCharacterLocation();
