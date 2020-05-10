@@ -29,7 +29,7 @@
             }
         </style>
     </head>
-    <body onload="renderGameBoard()">
+    <body onload="init()">
         <center>
             <canvas id="gameCanvas" width="900px" height="500px"></canvas>
         </center>
@@ -49,8 +49,17 @@
         <img src="/locations/home.png" id="home">
         <img src="/locations/theLand.png" id="theLand">
         <img src="/locations/trb.png" id="trb">
+        <img src="/locations/trb.png" id="player">
+        <img src="/characterAnimations/angie/angieWalk-1.png" id="playAni1">
     </body>
     <script>
+        var canvas = document.getElementById('gameCanvas');
+        var ctx = canvas.getContext('2d');
+        ctx.globalCompositeOperation = 'destination-over';
+        animationActive = true;
+        var fps = 25;
+
+
         var mainMapBackground = document.getElementById("mainMap");
         var nameSquare = document.getElementById("nameSquare");
         var nameSquarePlayer = document.getElementById("nameSquarePlayer");
@@ -59,30 +68,139 @@
         var homeImg = document.getElementById("home");
         var theLandImg = document.getElementById("theLand");
         var trbImg = document.getElementById("trb");
-        function renderGameBoard(players) {
-            var canvasDOM = document.getElementById("gameCanvas");
-            var ctx = canvasDOM.getContext('2d');
-            var img = document.createElement("IMG");
-            img.src = "/mainMap.png";
-            if (mainMapBackground.complete)
-                ctx.drawImage(mainMapBackground, 0, 0);
-            if (nameSquare.complete)
-                ctx.drawImage(nameSquare, 720, 0);
-            if (nameSquare.complete)
-                ctx.drawImage(nameSquare, 720, 166);
-            if (nameSquarePlayer.complete)
-                ctx.drawImage(nameSquarePlayer, 720, 332);
-            // LOCATIONS
-            if (downtownImg.complete)
-                ctx.drawImage(downtownImg, 150, 25);
-            if (eegees.complete)
-                ctx.drawImage(eegees, 100, 175);
-            if (home.complete)
-                ctx.drawImage(home, 525, 50);
-            if (theLand.complete)
-                ctx.drawImage(theLand, 400, 50);
-            if (trb.complete)
-                ctx.drawImage(trb, 425, 250);
+
+        var locations = {
+
         }
+        var requestAnimationFrame = window.requestAnimationFrame || 
+                            window.mozRequestAnimationFrame || 
+                            window.webkitRequestAnimationFrame || 
+                            window.msRequestAnimationFrame;
+        function init() {
+            initCharacter();
+            requestAnimationFrame(drawMap);
+        }
+        function drawMap() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+            drawCharacter();
+            drawMainPanel();
+            drawSidePanel();
+            //requestAnimationFrame(drawMap);
+        }
+        function drawMainPanel() {
+            ctx.drawImage(downtownImg, 150, 25);
+            ctx.drawImage(eegees, 100, 175);
+            ctx.drawImage(home, 525, 50);
+            ctx.drawImage(theLand, 400, 50);
+            ctx.drawImage(trb, 425, 250);
+            ctx.drawImage(mainMapBackground, 0, 0);
+        }
+        function drawSidePanel() {
+            ctx.drawImage(nameSquare, 720, 0);
+            ctx.drawImage(nameSquare, 720, 166);
+            ctx.drawImage(nameSquarePlayer, 720, 332);
+        }
+
+        var playerX = 0;
+        var playerY = 0;
+        var playerFrame = 0;
+        var playerVelocity = 75;// pixels per second
+        var playerSpeed = playerVelocity/fps;
+        var playerDirX = 0;
+        var playerDirY = 0;
+        var playerAnimation = [
+            new Image(),
+            new Image(),
+            new Image(),
+            new Image(),
+            
+        ]
+        function initCharacter() {
+            playerAnimation[0].src = "/characterAnimations/angie/angieWalk-1.png";
+            playerAnimation[1].src = "/characterAnimations/angie/angieWalk-2.png";
+            playerAnimation[2].src = "/characterAnimations/angie/angieWalk-1.png";
+            playerAnimation[3].src = "/characterAnimations/angie/angieWalk-3.png";
+            requestAnimationFrame(drawMap);
+        }
+        function drawCharacter() {
+            if (playerAnimation[0].complete)
+                ctx.drawImage(playerAnimation[playerFrame], playerX, playerY);
+            var walking = updateCharacterLocation();
+            if (walking) {
+                playerFrame = (playerFrame + 1) % playerAnimation.length;
+            } else {
+                playerFrame = 0;
+            }
+        }
+        function updateCharacterLocation() {
+            pxStep = (playerDirX != 0 && playerDirY != 0) 
+                ? playerSpeed * Math.sqrt(0.5) : playerSpeed;
+            playerX += pxStep * playerDirX;
+            playerY += pxStep * playerDirY;
+            playerX = Math.min(playerX, canvas.width);
+            playerY = Math.min(playerY, canvas.height);
+            playerX = Math.max(playerX, 0);
+            playerY = Math.max(playerY, 0);
+            return playerDirX != 0 || playerDirY != 0;
+        }
+
+
+
+        // CONTROLS
+        var leftArrow = false;
+        var rightArrow = false;
+        var upArrow = false;
+        var downArrow = false;
+        function setPlayerDir() {
+            if (leftArrow && !rightArrow) {
+                playerDirX = -1;
+            } else if (rightArrow && !leftArrow) {
+                playerDirX = 1;
+            } else if (!leftArrow && !rightArrow) {
+                playerDirX = 0;
+            }
+            if (upArrow && !downArrow) {
+                playerDirY = -1;
+            } else if (downArrow && !upArrow) {
+                playerDirY = 1;
+            } else if (!upArrow && !downArrow) {
+                playerDirY = 0;
+            }
+        }
+        document.onkeydown = function(e) { 
+            switch (e.keyCode) { 
+                case 37: 
+                    leftArrow = true;
+                    return setPlayerDir(); 
+                case 38: 
+                    upArrow = true; 
+                    return setPlayerDir();
+                case 39: 
+                    rightArrow = true;
+                    return setPlayerDir();
+                case 40: 
+                    downArrow = true;
+                    return setPlayerDir();
+            } 
+        }; 
+        document.onkeyup = function(e) { 
+            switch (e.keyCode) { 
+                case 37: 
+                    leftArrow = false; 
+                    return setPlayerDir();
+                case 38: 
+                    upArrow = false; 
+                    return setPlayerDir();
+                case 39: 
+                    rightArrow = false;
+                    return setPlayerDir();
+                case 40: 
+                    downArrow = false; 
+                    return setPlayerDir();
+            } 
+        }; 
+
+        // setting the animation
+         setInterval(() => { if (animationActive) drawMap() }, 1000/fps);
     </script>
 </html>
