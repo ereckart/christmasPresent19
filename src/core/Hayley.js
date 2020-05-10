@@ -40,6 +40,7 @@ class Hayley {
         this.metPlayers = [];
         this.location = "TRB";
         this.locationSecondary = "TRB2";
+        this.name = "hayley";
     }
 
     giveWrongInfo(player) {

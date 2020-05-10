@@ -141,6 +141,7 @@ class Mickey {
         this.metPlayers = [];
         this.location = "Eegees";
         this.bribeCount = 0;
+        this.name = "mickey";
     }
 
     giveBribe() {

@@ -98,7 +98,8 @@ io.on('connection', (client) => {
 app.get('/:player/:place', function(req, res){
     res.render('genericLocationPage', {
         'player': req.params.player,
-        'place': req.params.place
+        'place': req.params.place,
+        'character': characterMap[req.params.place].name
     });
 });
 app.get('/:player/:place/game', function(req, res){

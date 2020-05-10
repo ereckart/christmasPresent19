@@ -94,6 +94,7 @@ class Nonni {
     constructor() {
         this.metPlayers = [];
         this.location = "Downtown";
+        this.name = "nonni";
     }
 
     giveWrongInfo(player) {

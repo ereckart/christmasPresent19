@@ -73,6 +73,7 @@ class Grandaddy {
     constructor() {
         this.metPlayers = [];
         this.location = "TheLand";
+        this.name = "grandaddy";
     }
 
     giveWrongInfo(player) {

@@ -165,6 +165,7 @@ class Kevin {
         this.metPlayers = [];
         this.location = "Home";
         this.locationSecondary = "Home2";
+        this.name = "kevin";
     }
 
     getBribeCount() {

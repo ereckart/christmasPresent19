@@ -2,47 +2,28 @@
     <head>
         <title>Reckart Game 2020</title>
         <script src="/js/location-<%= place %>.js" type="text/js"></script>
+        <script src="/js/renderSidebar.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            var myId = "<%= player %>";
-            var place = "<%= place %>";
+            const myId = "<%= player %>";
+            const player = "<%= player.toLowerCase() %>";
+            const place = "<%= place %>";
+            const characterName = "<%= character.toLowerCase() %>";
             var socket = io('/?userId=' + myId + '&place=' + place);
-            socket.on('reply', (reply) => renderReply(reply));
+            var reply = null;
+            socket.on('reply', (reply) => saveReply(reply));
             function say(option) {
                 socket.emit('talk', option);
             }
-            function renderReply(reply) {
-                if (typeof reply == "string") {
-                    document.getElementById("dialogBox").innerHTML = `
-                        <i>${reply}</i>
-                    `
-                    return;
-                }
-                if (reply.convEnd && !reply.game) {
-                    document.getElementById("dialogBox").innerHTML = `
-                        ${reply.dialogue}<br><br>
-                        <button onclick="goToMap()">Continue on quest</button>
-                    `
-                    return;
-                }
-                document.getElementById("dialogBox").innerHTML = "";
-                if (reply.dialogue != null)
-                    document.getElementById("dialogBox").innerHTML += `
-                        ${reply.dialogue}
-                        <br><br>
-                    `
-                if (reply.responseOptions != null)
-                    for (var option in reply.responseOptions) {
-                        var buttonAction = `say('${option}')`;
-                        if (reply.game) buttonAction = "playGame()";
-                        document.getElementById("dialogBox").innerHTML += `
-                            <button onclick="${buttonAction}" class="dialogReply">
-                                ${reply.responseOptions[option]}
-                            </button><br>
-                        `
+            function saveReply(r) {
+                if (typeof r == "string") {
+                    reply = {
+                        dialogue: r
                     }
-
+                } else {
+                    reply = r;
+                }
             }
             function playGame() {
                 window.location.href = place + "/game";
@@ -64,12 +45,13 @@
             }
             socket.on('playerMeta', (reply) => renderPlayerMeta(reply));
             function renderPlayerMeta(meta) {
-                document.getElementById("coinCount").innerHTML = meta.coins;
+                //document.getElementById("coinCount").innerHTML = meta.coins;
             }
             window.setInterval(function(){
               pollForMyMeta();
             }, 5000);
         </script>
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
         <style>
             button.dialogReply, button {
                 border: 1px solid black;
@@ -78,19 +60,121 @@
                 line-height: 18px;
                 margin: 5px;
                 background-color: #f3f3f3;
+                font-family: 'Press Start 2P', cursive;
                 cursor: pointer;
+            }
+            * {
+                margin: 0px;
+                padding: 0px;
+            }
+            body {
+                background-color: #eee;
+                padding-top: calc(50vh - 250px);
             }
         </style>
     </head>
-    <body>
-        <h1 style="display: inline-block;"><%= place.toUpperCase() %></h1>
-        <a href="/<%= player %>/map" style="float: right;">GO TO MAP</a>
-        <span style="float:right; margin: 5px 20px;">
-            <b>COINS: </b>
-            <span id="coinCount"></span>
-        </span>
-        <hr>
-        <div id="dialogBox">
-        </div>
+    <body onload="init()">
+        <center>
+            <canvas id="gameCanvas" width="900px" height="500px"></canvas>
+        </center>
     </body>
+    <script>
+        var canvas = document.getElementById('gameCanvas');
+        var ctx = canvas.getContext('2d');
+        ctx.globalCompositeOperation = 'destination-over';
+        animationActive = true;
+        var requestAnimationFrame = window.requestAnimationFrame || 
+                window.mozRequestAnimationFrame || 
+                window.webkitRequestAnimationFrame || 
+                window.msRequestAnimationFrame;
+        function init() {
+            initSidePanel();
+            initMainPanel();
+            requestAnimationFrame(draw);
+        }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+            drawMainPanel();
+            drawSidePanel();
+            //requestAnimationFrame(draw);
+        }
+        setInterval(() => { if (animationActive) draw() }, 250);
+
+
+        
+        var mainBackground = new Image();
+        var mainMapBackground = new Image();
+        var character = new Image();
+        var actionMappings = ["", "", "", ""];
+        function initMainPanel() {
+            mainBackground.src = `/map/messageBackground.png`
+            mainMapBackground.src = "/map/mainMap.png";
+            character.src = `/computerCharacters/${characterName}.png`
+        }
+        function drawMainPanel() {
+            wrapText(ctx, "[M] GO TO MAP", 510, 440, 500, 12);
+            ctx.drawImage(character, -15, 15, 256, 256);
+            ctx.font = '12px "Press Start 2P"';
+            if (reply != null) {
+                wrapText(ctx, reply.dialogue, 170, 100, 390, 12);
+                if (reply.responseOptions != null) {
+                    var i = 1;
+                    for (var option in reply.responseOptions) {
+                        actionMappings[i] = option;
+                        if (reply.game) actionMappings[i] = "GO_TO_GAME";
+                        var txt = reply.responseOptions[option];
+                        wrapText(ctx, `[${i}]`, 70, 230 + i * 60, 550, 12);
+                        wrapText(ctx, txt, 120, 230 + i * 60, 550, 12);
+                        i++;
+                        
+                    }
+                }
+            }
+            ctx.drawImage(mainBackground, 0, 0);
+            ctx.drawImage(mainMapBackground, 0, 0);
+        }
+        function wrapText(context, text, x, y, maxWidth, fontSize) {
+            lineHeight = fontSize * 1.3;
+            var words = text.split(' ');
+            var line = '';
+
+            for(var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = context.measureText(testLine);
+            var testWidth = metrics.width;
+            if (testWidth > maxWidth && n > 0) {
+                ctx.font = `${fontSize}px "Press Start 2P"`;
+                context.fillText(line, x, y);
+                line = words[n] + ' ';
+                y += lineHeight;
+            }
+            else {
+                line = testLine;
+            }
+            }
+            context.fillText(line, x, y);
+        }
+
+
+        // KEY ACTION LISTENER
+        function doAction(n) {
+            var act = actionMappings[n];
+            if (act == "") return null;
+            if (act == "GO_TO_GAME") return playGame();
+            if (act == "GO_TO_MAP") return goToMap();
+            say(act);
+        }
+        document.onkeydown = function(e) {
+            switch (e.keyCode) { 
+                case 49: 
+                    return doAction(1); 
+                case 50: 
+                    return doAction(2); 
+                case 51: 
+                    return doAction(3);
+                case 77:
+                    return goToMap();
+            } 
+        }; 
+    </script>
 </html>
