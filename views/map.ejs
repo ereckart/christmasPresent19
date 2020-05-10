@@ -3,6 +3,8 @@
         <title>Reckart Game 2020</title>
         <script src="/js/renderSidebar.js"></script>
         <script>
+            const player = "<%= player.toLowerCase() %>";
+
             function createUUID(){
                 var dt = new Date().getTime();
                 var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -110,22 +112,22 @@
             left: [ new Image(), new Image(), new Image(), new Image() ],
         }
         function initCharacter() {
-            playerAnimation.down[0].src = "/characterAnimations/angie/angieWalk-1.png";
-            playerAnimation.down[1].src = "/characterAnimations/angie/angieWalk-2.png";
-            playerAnimation.down[2].src = "/characterAnimations/angie/angieWalk-1.png";
-            playerAnimation.down[3].src = "/characterAnimations/angie/angieWalk-3.png";
-            playerAnimation.left[0].src = "/characterAnimations/angie/angieWalkLeft-1.png";
-            playerAnimation.left[1].src = "/characterAnimations/angie/angieWalkLeft-2.png";
-            playerAnimation.left[2].src = "/characterAnimations/angie/angieWalkLeft-1.png";
-            playerAnimation.left[3].src = "/characterAnimations/angie/angieWalkLeft-3.png";
-            playerAnimation.up[0].src = "/characterAnimations/angie/angieWalkBack-1.png";
-            playerAnimation.up[1].src = "/characterAnimations/angie/angieWalkBack-2.png";
-            playerAnimation.up[2].src = "/characterAnimations/angie/angieWalkBack-1.png";
-            playerAnimation.up[3].src = "/characterAnimations/angie/angieWalkBack-3.png";
-            playerAnimation.right[0].src = "/characterAnimations/angie/angieWalkRight-1.png";
-            playerAnimation.right[1].src = "/characterAnimations/angie/angieWalkRight-2.png";
-            playerAnimation.right[2].src = "/characterAnimations/angie/angieWalkRight-1.png";
-            playerAnimation.right[3].src = "/characterAnimations/angie/angieWalkRight-3.png";
+            playerAnimation.down[0].src = `/characterAnimations/${player}/${player}Walk-1.png`;
+            playerAnimation.down[1].src = `/characterAnimations/${player}/${player}Walk-2.png`;
+            playerAnimation.down[2].src = `/characterAnimations/${player}/${player}Walk-1.png`;
+            playerAnimation.down[3].src = `/characterAnimations/${player}/${player}Walk-3.png`;
+            playerAnimation.left[0].src = `/characterAnimations/${player}/${player}WalkLeft-1.png`;
+            playerAnimation.left[1].src = `/characterAnimations/${player}/${player}WalkLeft-2.png`;
+            playerAnimation.left[2].src = `/characterAnimations/${player}/${player}WalkLeft-1.png`;
+            playerAnimation.left[3].src = `/characterAnimations/${player}/${player}WalkLeft-3.png`;
+            playerAnimation.up[0].src = `/characterAnimations/${player}/${player}WalkBack-1.png`;
+            playerAnimation.up[1].src = `/characterAnimations/${player}/${player}WalkBack-2.png`;
+            playerAnimation.up[2].src = `/characterAnimations/${player}/${player}WalkBack-1.png`;
+            playerAnimation.up[3].src = `/characterAnimations/${player}/${player}WalkBack-3.png`;
+            playerAnimation.right[0].src = `/characterAnimations/${player}/${player}WalkRight-1.png`;
+            playerAnimation.right[1].src = `/characterAnimations/${player}/${player}WalkRight-2.png`;
+            playerAnimation.right[2].src = `/characterAnimations/${player}/${player}WalkRight-1.png`;
+            playerAnimation.right[3].src = `/characterAnimations/${player}/${player}WalkRight-3.png`;
             requestAnimationFrame(drawMap);
         }
         var aniSet = playerAnimation.down;

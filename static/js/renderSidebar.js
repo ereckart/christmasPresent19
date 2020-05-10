@@ -5,7 +5,7 @@ var nameSquarePlayer = new Image();
 function initSidePanel() {
     notificationsSquare.src = `/map/notificationsSquare.png`;
     inventorySquare.src = `/map/inventorySquare.png`;
-    nameSquarePlayer.src = `/map/maddieNameSquare.png`;
+    nameSquarePlayer.src = `/map/${player}NameSquare.png`;
 }
 
 function drawSidePanel() {
