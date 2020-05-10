@@ -15,8 +15,24 @@
                 window.location.replace("/<%= player %>/"+ str + "?uuid=" + createUUID());
             }
         </script>
+        <style>
+            * {
+                margin: 0px;
+                padding: 0px;
+            }
+            img {
+                display: none;
+            }
+            body {
+                background-color: #eee;
+                padding-top: calc(50vh - 250px);
+            }
+        </style>
     </head>
-    <body>
+    <body onload="renderGameBoard()">
+        <center>
+            <canvas id="gameCanvas" width="900px" height="500px"></canvas>
+        </center>
         <ol>
             <li><a href="#" onclick="goTo('home')">Reckart House</a></li>
             <li><a href="#" onclick="goTo('theland')">The Land</a></li>
@@ -24,6 +40,49 @@
             <li><a href="#" onclick="goTo('downtown')">Downtown Tucson</a></li>
             <li><a href="#" onclick="goTo('eegees')">Eegees</a></li>
             <li><a href="#" onclick="goTo('mtlemmon')">Mt Lemmon</a></li>
-        </ol
+        </ol>
+        <img src="/mainMap.png" id="mainMap">
+        <img src="/NameSquare-1.png.png" id="nameSquare" >
+        <img src="/NameSquareMaddie-1.png.png" id="nameSquarePlayer">
+        <img src="/locations/downtown.png" id="downtown">
+        <img src="/locations/eegees.png" id="eegees">
+        <img src="/locations/home.png" id="home">
+        <img src="/locations/theLand.png" id="theLand">
+        <img src="/locations/trb.png" id="trb">
     </body>
+    <script>
+        var mainMapBackground = document.getElementById("mainMap");
+        var nameSquare = document.getElementById("nameSquare");
+        var nameSquarePlayer = document.getElementById("nameSquarePlayer");
+        var downtownImg = document.getElementById("downtown");
+        var eegeesImg = document.getElementById("eegees");
+        var homeImg = document.getElementById("home");
+        var theLandImg = document.getElementById("theLand");
+        var trbImg = document.getElementById("trb");
+        function renderGameBoard(players) {
+            var canvasDOM = document.getElementById("gameCanvas");
+            var ctx = canvasDOM.getContext('2d');
+            var img = document.createElement("IMG");
+            img.src = "/mainMap.png";
+            if (mainMapBackground.complete)
+                ctx.drawImage(mainMapBackground, 0, 0);
+            if (nameSquare.complete)
+                ctx.drawImage(nameSquare, 720, 0);
+            if (nameSquare.complete)
+                ctx.drawImage(nameSquare, 720, 166);
+            if (nameSquarePlayer.complete)
+                ctx.drawImage(nameSquarePlayer, 720, 332);
+            // LOCATIONS
+            if (downtownImg.complete)
+                ctx.drawImage(downtownImg, 150, 25);
+            if (eegees.complete)
+                ctx.drawImage(eegees, 100, 175);
+            if (home.complete)
+                ctx.drawImage(home, 525, 50);
+            if (theLand.complete)
+                ctx.drawImage(theLand, 400, 50);
+            if (trb.complete)
+                ctx.drawImage(trb, 425, 250);
+        }
+    </script>
 </html>
