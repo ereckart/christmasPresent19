@@ -19,7 +19,8 @@
             function saveReply(r) {
                 if (typeof r == "string") {
                     reply = {
-                        dialogue: r
+                        dialogue: r,
+                        convEnd: true
                     }
                 } else {
                     reply = r;
@@ -38,7 +39,9 @@
                 socket.emit('enterLocation', urlParams.get('uuid'));
             }
             function goToMap() {
-                window.location.href="/<%= player %>/map";
+                if (reply != null)
+                    if (reply.convEnd && !reply.game)
+                        window.location.href="/<%= player %>/map";
             }
             function pollForMyMeta() {
                 socket.emit('getMyMeta');
@@ -112,10 +115,11 @@
             character.src = `/computerCharacters/${characterName}.png`
         }
         function drawMainPanel() {
-            wrapText(ctx, "[M] GO TO MAP", 510, 440, 500, 12);
             ctx.drawImage(character, -15, 15, 256, 256);
             ctx.font = '12px "Press Start 2P"';
             if (reply != null) {
+                if (reply.convEnd && !reply.game)
+                    wrapText(ctx, "[M] GO TO MAP", 510, 440, 500, 12);
                 wrapText(ctx, reply.dialogue, 170, 100, 390, 12);
                 if (reply.responseOptions != null) {
                     var i = 1;
