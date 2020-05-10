@@ -106,28 +106,44 @@
         var playerFrame = 0;
         var playerVelocity = 75;// pixels per second
         var playerSpeed = playerVelocity/fps;
+        var animationFrameStick = 2; // frames per walking animation frame
         var playerDirX = 0;
         var playerDirY = 0;
-        var playerAnimation = [
-            new Image(),
-            new Image(),
-            new Image(),
-            new Image(),
-            
-        ]
+        var playerAnimation = {
+            down: [ new Image(), new Image(), new Image(), new Image() ],
+            up: [ new Image(), new Image(), new Image(), new Image() ],
+            right: [ new Image(), new Image(), new Image(), new Image() ],
+            left: [ new Image(), new Image(), new Image(), new Image() ],
+        }
         function initCharacter() {
-            playerAnimation[0].src = "/characterAnimations/angie/angieWalk-1.png";
-            playerAnimation[1].src = "/characterAnimations/angie/angieWalk-2.png";
-            playerAnimation[2].src = "/characterAnimations/angie/angieWalk-1.png";
-            playerAnimation[3].src = "/characterAnimations/angie/angieWalk-3.png";
+            playerAnimation.down[0].src = "/characterAnimations/angie/angieWalk-1.png";
+            playerAnimation.down[1].src = "/characterAnimations/angie/angieWalk-2.png";
+            playerAnimation.down[2].src = "/characterAnimations/angie/angieWalk-1.png";
+            playerAnimation.down[3].src = "/characterAnimations/angie/angieWalk-3.png";
+            playerAnimation.left[0].src = "/characterAnimations/angie/angieWalkLeft-1.png";
+            playerAnimation.left[1].src = "/characterAnimations/angie/angieWalkLeft-2.png";
+            playerAnimation.left[2].src = "/characterAnimations/angie/angieWalkLeft-1.png";
+            playerAnimation.left[3].src = "/characterAnimations/angie/angieWalkLeft-3.png";
+            playerAnimation.up[0].src = "/characterAnimations/angie/angieWalkBack-1.png";
+            playerAnimation.up[1].src = "/characterAnimations/angie/angieWalkBack-2.png";
+            playerAnimation.up[2].src = "/characterAnimations/angie/angieWalkBack-1.png";
+            playerAnimation.up[3].src = "/characterAnimations/angie/angieWalkBack-3.png";
+            playerAnimation.right[0].src = "/characterAnimations/angie/angieWalkRight-1.png";
+            playerAnimation.right[1].src = "/characterAnimations/angie/angieWalkRight-2.png";
+            playerAnimation.right[2].src = "/characterAnimations/angie/angieWalkRight-1.png";
+            playerAnimation.right[3].src = "/characterAnimations/angie/angieWalkRight-3.png";
             requestAnimationFrame(drawMap);
         }
         function drawCharacter() {
-            if (playerAnimation[0].complete)
-                ctx.drawImage(playerAnimation[playerFrame], playerX, playerY);
+            var aniSet = playerAnimation.down;
+            if (playerDirX > 0) aniSet = playerAnimation.right;
+            if (playerDirX < 0) aniSet = playerAnimation.left;
+            if (playerDirY < 0) aniSet = playerAnimation.up;
+            var frameNumber = Math.floor(playerFrame/animationFrameStick) % aniSet.length;
+            ctx.drawImage(aniSet[frameNumber], playerX, playerY);
             var walking = updateCharacterLocation();
             if (walking) {
-                playerFrame = (playerFrame + 1) % playerAnimation.length;
+                playerFrame = (playerFrame + 1) % (aniSet.length*animationFrameStick);
             } else {
                 playerFrame = 0;
             }
@@ -151,19 +167,41 @@
         var rightArrow = false;
         var upArrow = false;
         var downArrow = false;
-        function setPlayerDir() {
-            if (leftArrow && !rightArrow) {
-                playerDirX = -1;
-            } else if (rightArrow && !leftArrow) {
-                playerDirX = 1;
-            } else if (!leftArrow && !rightArrow) {
-                playerDirX = 0;
+        function setPlayerDir(dir) {
+            switch (dir) {
+                case "left":
+                    playerDirX = -1;
+                    playerDirY = 0;
+                    return;
+                case "right":
+                    playerDirX = 1;
+                    playerDirY = 0;
+                    return;
+                case "down":
+                    playerDirX = 0;
+                    playerDirY = 1;
+                    return;
+                case "up":
+                    playerDirX = 0;
+                    playerDirY = -1;
+                    return;
+                default:
+                    break
             }
-            if (upArrow && !downArrow) {
-                playerDirY = -1;
-            } else if (downArrow && !upArrow) {
+            if (rightArrow) {
+                playerDirX = 1;
+                playerDirY = 0;
+            } else if (leftArrow) {
+                playerDirX = -1;
+                playerDirY = 0;
+            } else if (downArrow) {
+                playerDirX = 0;
                 playerDirY = 1;
-            } else if (!upArrow && !downArrow) {
+            } else if (upArrow) {
+                playerDirX = 0;
+                playerDirY = -1;
+            } else {
+                playerDirX = 0;
                 playerDirY = 0;
             }
         }
@@ -171,16 +209,16 @@
             switch (e.keyCode) { 
                 case 37: 
                     leftArrow = true;
-                    return setPlayerDir(); 
+                    return setPlayerDir("left"); 
                 case 38: 
                     upArrow = true; 
-                    return setPlayerDir();
+                    return setPlayerDir("up");
                 case 39: 
                     rightArrow = true;
-                    return setPlayerDir();
+                    return setPlayerDir("right");
                 case 40: 
                     downArrow = true;
-                    return setPlayerDir();
+                    return setPlayerDir("down");
             } 
         }; 
         document.onkeyup = function(e) { 
