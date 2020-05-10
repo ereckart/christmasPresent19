@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Reckart Game 2020</title>
+        <script src="/js/renderSidebar.js"></script>
         <script>
             function createUUID(){
                 var dt = new Date().getTime();
@@ -42,8 +43,6 @@
             <li><a href="#" onclick="goTo('mtlemmon')">Mt Lemmon</a></li>
         </ol>
         <img src="/mainMap.png" id="mainMap">
-        <img src="/NameSquare-1.png.png" id="nameSquare" >
-        <img src="/NameSquareMaddie-1.png.png" id="nameSquarePlayer">
         <img src="/locations/downtown.png" id="downtown">
         <img src="/locations/eegees.png" id="eegees">
         <img src="/locations/home.png" id="home">
@@ -61,8 +60,6 @@
 
 
         var mainMapBackground = document.getElementById("mainMap");
-        var nameSquare = document.getElementById("nameSquare");
-        var nameSquarePlayer = document.getElementById("nameSquarePlayer");
         var downtownImg = document.getElementById("downtown");
         var eegeesImg = document.getElementById("eegees");
         var homeImg = document.getElementById("home");
@@ -78,6 +75,7 @@
                             window.msRequestAnimationFrame;
         function init() {
             initCharacter();
+            initSidePanel();
             requestAnimationFrame(drawMap);
         }
         function drawMap() {
@@ -94,11 +92,6 @@
             ctx.drawImage(theLand, 400, 50);
             ctx.drawImage(trb, 425, 250);
             ctx.drawImage(mainMapBackground, 0, 0);
-        }
-        function drawSidePanel() {
-            ctx.drawImage(nameSquare, 720, 0);
-            ctx.drawImage(nameSquare, 720, 166);
-            ctx.drawImage(nameSquarePlayer, 720, 332);
         }
 
         var playerX = 0;
