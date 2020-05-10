@@ -42,14 +42,6 @@
             <li><a href="#" onclick="goTo('eegees')">Eegees</a></li>
             <li><a href="#" onclick="goTo('mtlemmon')">Mt Lemmon</a></li>
         </ol>
-        <img src="/mainMap.png" id="mainMap">
-        <img src="/locations/downtown.png" id="downtown">
-        <img src="/locations/eegees.png" id="eegees">
-        <img src="/locations/home.png" id="home">
-        <img src="/locations/theLand.png" id="theLand">
-        <img src="/locations/trb.png" id="trb">
-        <img src="/locations/trb.png" id="player">
-        <img src="/characterAnimations/angie/angieWalk-1.png" id="playAni1">
     </body>
     <script>
         var canvas = document.getElementById('gameCanvas');
@@ -57,14 +49,6 @@
         ctx.globalCompositeOperation = 'destination-over';
         animationActive = true;
         var fps = 25;
-
-
-        var mainMapBackground = document.getElementById("mainMap");
-        var downtownImg = document.getElementById("downtown");
-        var eegeesImg = document.getElementById("eegees");
-        var homeImg = document.getElementById("home");
-        var theLandImg = document.getElementById("theLand");
-        var trbImg = document.getElementById("trb");
 
         var locations = {
 
@@ -76,6 +60,7 @@
         function init() {
             initCharacter();
             initSidePanel();
+            initMainPanel();
             requestAnimationFrame(drawMap);
         }
         function drawMap() {
@@ -85,12 +70,28 @@
             drawSidePanel();
             //requestAnimationFrame(drawMap);
         }
+
+        
+        var mainMapBackground = new Image();
+        var downtownImg = new Image();
+        var eegeesImg = new Image();
+        var homeImg = new Image();
+        var theLandImg = new Image();
+        var trbImg = new Image();
+        function initMainPanel() {
+            mainMapBackground.src = "/map/mainMap.png";
+            downtownImg.src = "/locations/downtown.png";
+            eegeesImg.src = "/locations/eegees.png";
+            homeImg.src = "/locations/home.png";
+            theLandImg.src = "/locations/theLand.png";
+            trbImg.src = "/locations/trb.png";
+        }
         function drawMainPanel() {
             ctx.drawImage(downtownImg, 150, 25);
-            ctx.drawImage(eegees, 100, 175);
-            ctx.drawImage(home, 525, 50);
-            ctx.drawImage(theLand, 400, 50);
-            ctx.drawImage(trb, 425, 250);
+            ctx.drawImage(eegeesImg, 100, 175);
+            ctx.drawImage(homeImg, 525, 50);
+            ctx.drawImage(theLandImg, 400, 50);
+            ctx.drawImage(trbImg, 425, 250);
             ctx.drawImage(mainMapBackground, 0, 0);
         }
 

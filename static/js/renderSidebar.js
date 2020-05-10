@@ -1,13 +1,15 @@
-var nameSquare = new Image();
+var notificationsSquare = new Image();
+var inventorySquare = new Image();
 var nameSquarePlayer = new Image();
 
 function initSidePanel() {
-    nameSquare.src = `/NameSquare-1.png.png`;
-    nameSquarePlayer.src = `/NameSquareMaddie-1.png.png`;
+    notificationsSquare.src = `/map/notificationsSquare.png`;
+    inventorySquare.src = `/map/inventorySquare.png`;
+    nameSquarePlayer.src = `/map/maddieNameSquare.png`;
 }
 
 function drawSidePanel() {
-    ctx.drawImage(nameSquare, 720, 0);
-    ctx.drawImage(nameSquare, 720, 166);
-    ctx.drawImage(nameSquarePlayer, 720, 332);
+    ctx.drawImage(notificationsSquare, 720, 0);
+    ctx.drawImage(inventorySquare, 720, 167);
+    ctx.drawImage(nameSquarePlayer, 720, 333);
 }
