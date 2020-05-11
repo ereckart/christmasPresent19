@@ -1,10 +1,14 @@
 <html>
     <head>
         <title>Reckart Game 2020</title>
-        <script src="/js/location-<%= place %>.js" type="text/js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
+        <script src="/js/canvasHelper.js"></script>
+        <script src="/js/renderSidebar.js"></script>
+        <script src="/js/games/<%= place %>Game.js"></script>
         <script>
-            var myId = "<%= player %>";
-            var place = "<%= place %>";
+            const myId = "<%= player %>";
+            const player = "<%= player.toLowerCase() %>";
+            const place = "<%= place %>";
             function createUUID(){
                 var dt = new Date().getTime();
                 var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -14,14 +18,39 @@
                 });
                 return uuid;
             }
-            function goTo(str) {
-                window.location.replace("/<%= player %>/"+ str + "?uuid=" + createUUID() + "&returningFromGame=won");
+            function goTo(str, success) {
+                const uuid = createUUID();
+                var state = "lost";
+                if (success) state = "won"
+                window.location.replace(`/<%= player %>/${str}?uuid=${uuid}&returningFromGame=${state}`);
             }
         </script>
+        <style>
+            * {
+                margin: 0px;
+                padding: 0px;
+            }
+            body {
+                background-color: #eee;
+                padding-top: calc(50vh - 250px);
+            }
+        </style>
     </head>
-    <body>
+    <body onload="init();">
+        <center>
+            <canvas id="gameCanvas" width="900px" height="500px"></canvas>
+        </center>
         Game complete,
         <a href="#" onclick="goTo('<%= place %>')">
             go back to <%= place.toUpperCase() %></a>
     </body>
+    <script>
+        var canvas = document.getElementById('gameCanvas');
+        var ctx = canvas.getContext('2d');
+        ctx.globalCompositeOperation = 'destination-over';
+        animationActive = true;
+        function stopAnimation() {
+            animationActive = false;
+        }
+    </script>
 </html>
