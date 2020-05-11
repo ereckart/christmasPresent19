@@ -75,6 +75,8 @@
 
         
         var mainMapBackground = new Image();
+        var mapCoverBackground = new Image();
+        var cactusImgs = [ new Image(), new Image(), new Image(), new Image() ]
         var downtownImg = new Image();
         var eegeesImg = new Image();
         var homeImg = new Image();
@@ -82,6 +84,11 @@
         var trbImg = new Image();
         function initMainPanel() {
             mainMapBackground.src = "/map/mainMap.png";
+            mapCoverBackground.src = "/map/mapBackground.png";
+            cactusImgs[0].src = "/map/Cactus0.png";
+            cactusImgs[1].src = "/map/Cactus1.png";
+            cactusImgs[2].src = "/map/Cactus2.png";
+            cactusImgs[3].src = "/map/Cactus3.png";
             downtownImg.src = "/locations/downtown.png";
             eegeesImg.src = "/locations/eegees.png";
             homeImg.src = "/locations/home.png";
@@ -94,7 +101,19 @@
             ctx.drawImage(homeImg, 525, 50);
             ctx.drawImage(theLandImg, 400, 50);
             ctx.drawImage(trbImg, 425, 250);
+            drawCactus();
+            ctx.drawImage(mapCoverBackground, 0, 0);
             ctx.drawImage(mainMapBackground, 0, 0);
+        }
+        function drawCactus() {
+            ctx.drawImage(cactusImgs[0], 50, 50, 32, 32);
+            ctx.drawImage(cactusImgs[0], 250, 200, 32, 32);
+            ctx.drawImage(cactusImgs[1], 540, 50, 32, 32);
+            ctx.drawImage(cactusImgs[1], 300, 300, 32, 32);
+            ctx.drawImage(cactusImgs[2], 50, 250, 32, 32);
+            ctx.drawImage(cactusImgs[2], 50, 350, 32, 32);
+            ctx.drawImage(cactusImgs[3], 220, 400, 32, 32);
+            ctx.drawImage(cactusImgs[3], 700, 500, 32, 32);
         }
 
         var playerX = 0;
