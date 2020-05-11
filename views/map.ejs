@@ -75,6 +75,7 @@
 
         
         var mainMapBackground = new Image();
+        var mapCoverBackground = new Image();
         var downtownImg = new Image();
         var eegeesImg = new Image();
         var homeImg = new Image();
@@ -82,6 +83,7 @@
         var trbImg = new Image();
         function initMainPanel() {
             mainMapBackground.src = "/map/mainMap.png";
+            mapCoverBackground.src = "/map/mapBackground.png";
             downtownImg.src = "/locations/downtown.png";
             eegeesImg.src = "/locations/eegees.png";
             homeImg.src = "/locations/home.png";
@@ -94,6 +96,7 @@
             ctx.drawImage(homeImg, 525, 50);
             ctx.drawImage(theLandImg, 400, 50);
             ctx.drawImage(trbImg, 425, 250);
+            ctx.drawImage(mapCoverBackground, 0, 0);
             ctx.drawImage(mainMapBackground, 0, 0);
         }
 
