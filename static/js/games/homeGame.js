@@ -112,7 +112,7 @@ var obstacleAnimation = [ new Image(), new Image(), new Image(), new Image() ]
 function initMainPanel() {
     mainMapBackground.src = "/map/mainMap.png";
     mainBackground.src = "/games/homeGame/homeGameBackground.png";
-    instructionsBackground.src = "/map/messageBackground.png";
+    instructionsBackground.src = "/games/genericBackground.png";
     playerAnimation[0].src = `/characterAnimations/${player}/${player}WalkRight-1.png`;
     playerAnimation[1].src = `/characterAnimations/${player}/${player}WalkRight-2.png`;
     playerAnimation[2].src = `/characterAnimations/${player}/${player}WalkRight-1.png`;
