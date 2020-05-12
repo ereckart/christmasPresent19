@@ -63,6 +63,7 @@
             initCharacter();
             initSidePanel();
             initMainPanel();
+            //populateCactus(40, 40, [0, 0]);
             requestAnimationFrame(drawMap);
         }
         function drawMap() {
@@ -76,12 +77,13 @@
         
         var mainMapBackground = new Image();
         var mapCoverBackground = new Image();
-        var cactusImgs = [ new Image(), new Image(), new Image(), new Image() ]
+        var cactusImgs = [ new Image(), new Image(), new Image(), new Image(), new Image(), new Image(), new Image(), new Image() ]
         var downtownImg = new Image();
         var eegeesImg = new Image();
         var homeImg = new Image();
         var theLandImg = new Image();
         var trbImg = new Image();
+        var mtLemmonImg = new Image();
         function initMainPanel() {
             mainMapBackground.src = "/map/mainMap.png";
             mapCoverBackground.src = "/map/mapBackground.png";
@@ -89,31 +91,134 @@
             cactusImgs[1].src = "/map/Cactus1.png";
             cactusImgs[2].src = "/map/Cactus2.png";
             cactusImgs[3].src = "/map/Cactus3.png";
+            cactusImgs[4].src = "/map/Cactus4.png";
+            cactusImgs[5].src = "/map/Cactus5.png";
+            cactusImgs[6].src = "/map/Cactus6.png";
+            cactusImgs[7].src = "/map/Cactus7.png";
             downtownImg.src = "/locations/downtown.png";
             eegeesImg.src = "/locations/eegees.png";
             homeImg.src = "/locations/home.png";
             theLandImg.src = "/locations/theLand.png";
             trbImg.src = "/locations/trb.png";
+            mtLemmonImg.src = "/locations/mtLemmon.png";
         }
         function drawMainPanel() {
-            ctx.drawImage(downtownImg, 150, 25);
-            ctx.drawImage(eegeesImg, 100, 175);
-            ctx.drawImage(homeImg, 525, 50);
-            ctx.drawImage(theLandImg, 400, 50);
-            ctx.drawImage(trbImg, 425, 250);
+            ctx.drawImage(downtownImg, 20, 245);
+            ctx.drawImage(eegeesImg, 75, 90);
+            ctx.drawImage(homeImg, 410, 340);
+            ctx.drawImage(theLandImg, 285, 340);
+            ctx.drawImage(trbImg, 415, 160);
+            ctx.drawImage(mtLemmonImg, 393, 20);
             drawCactus();
             ctx.drawImage(mapCoverBackground, 0, 0);
             ctx.drawImage(mainMapBackground, 0, 0);
         }
+        function updateNumMoves(width, height, popArea, max_width, max_height, pad) {
+            var numb = 0;
+            for (x = width - 4; x <= width +4; x++) {
+                for (y = height -4; y <= height+4; y++) {
+                    if (pad <= x  && x <= max_width && pad <= y && y <= max_height) {
+                        if (popArea[x][y] == 0) {
+                            popArea[x][y] = 2;
+                            numb++;
+                        }
+                    }
+                }
+            }
+            console.log("NUM MOVES REMOVE: " + (numb+1));
+            return numb+1;
+        }
+        // function checkSurroundArea(width, height, popArea) {
+        //     for (x = width - 4; x < width +4; x++) {
+        //         for (y = height -4; y < height+4; y++) {
+        //             if (popArea[x][y] ==1) {
+        //                 return false;
+        //                 console.log("SPOT ALREADY TAKEN");
+        //             }
+        //         }
+        //     }
+        //     return true;
+        // }
+        function nextSpot(popArea, max_width, max_height, pad, numMoves) {
+            console.log("CUR NUMB MOVES: " + numMoves);
+            var cur_width = Math.floor(Math.random() * (max_width - pad) + pad);
+            var cur_height = Math.floor(Math.random() * (max_height - pad) + pad);
+            if (popArea[cur_width][cur_height] == 0) {
+                popArea[cur_width][cur_height] = 1;
+                console.log("CUR WIDTH : " + cur_width + " CUR HEIGHT: " + cur_height);
+                numMoves -= updateNumMoves(cur_width, cur_height, popArea, max_width, max_height, pad);
+                console.log("NUM MOVES LEFT: " + numMoves);
+            } else {
+                console.log("INVALID MOVE");
+            }
+            return numMoves;
+        }
+        function populateCactus(width, height, center) {
+            if (width >= 32 && height >= 32) {
+                //create 2d array repping the area to populate
+                var popArea = new Array(width);
+                for (i = 0; i < width; i++) {
+                    popArea[i] = new Array(height);
+                }
+                // fill 2d array with zeros
+                for (w = 0; w < width; w++) {
+                    for (h=0; h < height; h++) {
+                        popArea[w][h] = 0;
+                    }
+                }
+                console.log("Area is large enough");
+
+                // safe ranges
+                var pad = 16;
+                var max_width = width - pad - 1;
+                var max_height = height - pad - 1;
+                console.log("MAX WIDTH: " + max_width + "MAX HEIGHT: " + max_height);
+
+                // possible number of moves
+                var numMoves = (max_width - pad + 1) * (max_height - pad + 1);
+                console.log("START NUM MOVES : " + numMoves);
+
+                // choose random starting point inside ranges
+                var start_width = Math.floor(Math.random() * (max_width - pad) + pad);
+                var start_height = Math.floor(Math.random() * (max_height - pad) + pad);
+                popArea[start_width][start_height] = 1;
+                numMoves -= updateNumMoves(start_width, start_height, popArea, max_width, max_height, pad);
+                console.log(start_width);
+                console.log(start_height);
+                console.log(numMoves);
+
+                // keep choosing numbers until no longer can
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+                numMoves = nextSpot(popArea, max_width, max_height, pad, numMoves);
+            }
+        }
         function drawCactus() {
+            //populateCactus(32, 32, [0,0]);
+            // cactus cluster in top right corner
             ctx.drawImage(cactusImgs[0], 50, 50, 32, 32);
-            ctx.drawImage(cactusImgs[0], 250, 200, 32, 32);
-            ctx.drawImage(cactusImgs[1], 540, 50, 32, 32);
+            ctx.drawImage(cactusImgs[1], 54, 38, 32, 32);
+            ctx.drawImage(cactusImgs[2], 37, 36, 32, 32);
+            ctx.drawImage(cactusImgs[3], 40, 55, 32, 32);
+
+
+            ctx.drawImage(cactusImgs[0], 250, 220, 32, 32);
+            ctx.drawImage(cactusImgs[1], 440, 300, 32, 32);
             ctx.drawImage(cactusImgs[1], 300, 300, 32, 32);
             ctx.drawImage(cactusImgs[2], 50, 250, 32, 32);
-            ctx.drawImage(cactusImgs[2], 50, 350, 32, 32);
+            ctx.drawImage(cactusImgs[2], 50, 450, 32, 32);
             ctx.drawImage(cactusImgs[3], 220, 400, 32, 32);
-            ctx.drawImage(cactusImgs[3], 700, 500, 32, 32);
+            ctx.drawImage(cactusImgs[3], 600, 400, 32, 32);
         }
 
         var playerX = 0;
