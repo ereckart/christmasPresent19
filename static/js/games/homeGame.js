@@ -212,3 +212,6 @@ document.onkeydown = function(e) {
             return continueAction();
     } 
 };
+function mouseClickHappened(x, y) {
+    
+}
