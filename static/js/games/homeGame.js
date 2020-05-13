@@ -117,10 +117,10 @@ function initMainPanel() {
     playerAnimation[1].src = `/characterAnimations/${player}/${player}WalkRight-2.png`;
     playerAnimation[2].src = `/characterAnimations/${player}/${player}WalkRight-1.png`;
     playerAnimation[3].src = `/characterAnimations/${player}/${player}WalkRight-3.png`;
-    obstacleAnimation[0].src = `/characterAnimations/${player}/${player}WalkLeft-1.png`;
-    obstacleAnimation[1].src = `/characterAnimations/${player}/${player}WalkLeft-2.png`;
-    obstacleAnimation[2].src = `/characterAnimations/${player}/${player}WalkLeft-1.png`;
-    obstacleAnimation[3].src = `/characterAnimations/${player}/${player}WalkLeft-3.png`;
+    obstacleAnimation[0].src = `/games/homeGame/lizthewhiteWalkLeft-1.png`;
+    obstacleAnimation[1].src = `/games/homeGame/lizthewhiteWalkLeft-2.png`;
+    obstacleAnimation[2].src = `/games/homeGame/lizthewhiteWalkLeft-1.png`;
+    obstacleAnimation[3].src = `/games/homeGame/lizthewhiteWalkLeft-3.png`;
 }
 function drawMainPanel() {
     switch (gameState) {
