@@ -63,6 +63,7 @@
             initCharacter();
             initSidePanel();
             initMainPanel();
+            populateCactus();
             requestAnimationFrame(drawMap);
         }
         function drawMap() {
@@ -76,12 +77,13 @@
         
         var mainMapBackground = new Image();
         var mapCoverBackground = new Image();
-        var cactusImgs = [ new Image(), new Image(), new Image(), new Image() ]
+        var cactusImgs = [ new Image(), new Image(), new Image(), new Image(), new Image(), new Image(), new Image(), new Image() ]
         var downtownImg = new Image();
         var eegeesImg = new Image();
         var homeImg = new Image();
         var theLandImg = new Image();
         var trbImg = new Image();
+        var mtLemmonImg = new Image();
         function initMainPanel() {
             mainMapBackground.src = "/map/mainMap.png";
             mapCoverBackground.src = "/map/mapBackground.png";
@@ -89,31 +91,72 @@
             cactusImgs[1].src = "/map/Cactus1.png";
             cactusImgs[2].src = "/map/Cactus2.png";
             cactusImgs[3].src = "/map/Cactus3.png";
+            cactusImgs[4].src = "/map/Cactus4.png";
+            cactusImgs[5].src = "/map/Cactus5.png";
+            cactusImgs[6].src = "/map/Cactus6.png";
+            cactusImgs[7].src = "/map/Cactus7.png";
             downtownImg.src = "/locations/downtown.png";
             eegeesImg.src = "/locations/eegees.png";
             homeImg.src = "/locations/home.png";
             theLandImg.src = "/locations/theLand.png";
             trbImg.src = "/locations/trb.png";
+            mtLemmonImg.src = "/locations/mtLemmon.png";
         }
         function drawMainPanel() {
-            ctx.drawImage(downtownImg, 150, 25);
-            ctx.drawImage(eegeesImg, 100, 175);
-            ctx.drawImage(homeImg, 525, 50);
-            ctx.drawImage(theLandImg, 400, 50);
-            ctx.drawImage(trbImg, 425, 250);
+            ctx.drawImage(downtownImg, 20, 245);
+            ctx.drawImage(eegeesImg, 75, 90);
+            ctx.drawImage(homeImg, 410, 340);
+            ctx.drawImage(theLandImg, 285, 340);
+            ctx.drawImage(trbImg, 415, 160);
+            ctx.drawImage(mtLemmonImg, 393, 20);
             drawCactus();
             ctx.drawImage(mapCoverBackground, 0, 0);
             ctx.drawImage(mainMapBackground, 0, 0);
         }
+        function updateNumMoves(width, height, popArea, max_width, max_height, pad) {
+            var numb = 0;
+            for (x = width - 4; x <= width +4; x++) {
+                for (y = height -4; y <= height+4; y++) {
+                    if (pad <= x  && x <= max_width && pad <= y && y <= max_height) {
+                        if (popArea[x][y] == 0) {
+                            popArea[x][y] = 2;
+                            numb++;
+                        }
+                    }
+                }
+            }
+            console.log("NUM MOVES REMOVE: " + (numb+1));
+            return numb+1;
+        }
+        const cactusCount = 60;
+        const cactusBank = [];
+        const mapWidth = 720;
+        const mapHeight = 500;
+        const mapMargin = [40, 100, 100, 40]; // top right bottom left
+        const cactusSize = 32;
+        function populateCactus(width, height, center) {
+            for (var i = 0; i < cactusCount; i++) {
+                var cactus = {};
+                cactus.img = cactusImgs[Math.floor(cactusImgs.length * Math.random())];
+                var w = mapWidth - mapMargin[1] - mapMargin[3];
+                cactus.x = Math.floor(w * Math.random()) + mapMargin[1];
+                var h = mapHeight - mapMargin[0] - mapMargin[2];
+                cactus.y = Math.floor(h * Math.random()) + mapMargin[0];
+                cactusBank.push(cactus);
+            }
+        }
         function drawCactus() {
-            ctx.drawImage(cactusImgs[0], 50, 50, 32, 32);
-            ctx.drawImage(cactusImgs[0], 250, 200, 32, 32);
-            ctx.drawImage(cactusImgs[1], 540, 50, 32, 32);
-            ctx.drawImage(cactusImgs[1], 300, 300, 32, 32);
-            ctx.drawImage(cactusImgs[2], 50, 250, 32, 32);
-            ctx.drawImage(cactusImgs[2], 50, 350, 32, 32);
-            ctx.drawImage(cactusImgs[3], 220, 400, 32, 32);
-            ctx.drawImage(cactusImgs[3], 700, 500, 32, 32);
+            // cactus cluster in top right corner
+            for (var i = 0; i < cactusBank.length; i++) {
+                var c = cactusBank[i];
+                ctx.drawImage(c.img, c.x, c.y, cactusSize, cactusSize);
+            }
+             ctx.drawImage(cactusImgs[1], 54, 38, 32, 32);
+            ctx.drawImage(cactusImgs[2], 37, 36, 32, 32);
+            ctx.drawImage(cactusImgs[3], 40, 55, 32, 32);
+        }
+        function drawSingleCactus() {
+
         }
 
         var playerX = 0;
