@@ -78,6 +78,7 @@
         var mainMapBackground = new Image();
         var mapCoverBackground = new Image();
         var cactusImgs = [ new Image(), new Image(), new Image(), new Image(), new Image(), new Image(), new Image(), new Image() ]
+        var ocotilloImg = new Image();
         var downtownImg = new Image();
         var eegeesImg = new Image();
         var homeImg = new Image();
@@ -95,6 +96,7 @@
             cactusImgs[5].src = "/map/Cactus5.png";
             cactusImgs[6].src = "/map/Cactus6.png";
             cactusImgs[7].src = "/map/Cactus7.png";
+            ocotilloImg.src = "/map/Ocotillo.png";
             downtownImg.src = "/locations/downtown.png";
             eegeesImg.src = "/locations/eegees.png";
             homeImg.src = "/locations/home.png";
@@ -110,6 +112,7 @@
             ctx.drawImage(trbImg, 415, 160);
             ctx.drawImage(mtLemmonImg, 393, 20);
             drawCactus();
+            drawOcotillo();
             ctx.drawImage(mapCoverBackground, 0, 0);
             ctx.drawImage(mainMapBackground, 0, 0);
         }
@@ -157,6 +160,9 @@
         }
         function drawSingleCactus() {
 
+        }
+        function drawOcotillo() {
+            ctx.drawImage(ocotilloImg, 300, 300, 32, 32);
         }
 
         var playerX = 0;
