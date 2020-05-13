@@ -1,10 +1,10 @@
-var gameState = "GAME_1";
+var gameState = "INSTRUCTIONS_1";
 
 // RENDERING FUNCTIONS
 function init() {
     initSidePanel();
     initMainPanel();
-    startGame();
+    //startGame();
     requestAnimationFrame(draw);
 }
 function draw() {
@@ -66,7 +66,20 @@ function initMainPanel() {
 function drawMainPanel() {
     switch (gameState) {
         case "GAME_1":
+        case "GAME_2":
             renderGame();
+            break;
+        case "INSTRUCTIONS_1":
+            renderInitInstructions();
+            break;
+        case "INSTRUCTIONS_2":
+            renderSecondInstructions();
+            break;
+        case "CHALLENGE_COMPLETE":
+            renderChallengeComplete();
+            break;
+        default:
+            renderInitInstructions();
     }
     wrapText(ctx, "Press [ENTER] to begin");
     ctx.drawImage(genericBackground, 0, 0);
@@ -89,6 +102,19 @@ function renderCard(card, x, y) {
         ctx.drawImage(cardBack, xCoord, yCoord, cardWidth, cardHeight);
     }
 }
+function renderInitInstructions() {
+    ctx.font = '12px "Press Start 2P"';
+    wrapText(ctx, "Press [ENTER] to begin challenge.", 50, 150, 500, 12);
+}
+function renderSecondInstructions() {
+    ctx.font = '12px "Press Start 2P"';
+    wrapText(ctx, "Round 1 complete!", 50, 150, 500, 12);
+    wrapText(ctx, "Press [ENTER] to begin next round.", 50, 250, 500, 12);
+}
+function renderChallengeComplete() {
+    ctx.font = '12px "Press Start 2P"';
+    wrapText(ctx, "------ CHALLENGE COMPLETED ------", 150, 150, 500, 12)
+}
 
 // GAME CONFIG
 const rows = 4;
@@ -100,8 +126,18 @@ var canClick = true;
 var cardData = []
 var firstCard = null;
 var secondCard = null;
+var swapCards = false;
 var matchCount = 0;
 function startGame() {
+    if (gameState == "INSTRUCTIONS_1") {
+        gameState = "GAME_1";
+        swapCards = false;
+    } else if (gameState == "INSTRUCTIONS_2") {
+        gameState = "GAME_2";
+        swapCards = true;
+    } else {
+        return;
+    }
     generateCards();
     canClick = false;
     firstCard = null;
@@ -115,8 +151,12 @@ function startGame() {
 }
 function generateCards() {
     cardData = [];
-    var order = Object.keys(cards).concat(Object.keys(cards));
+    var order = Object.keys(cards);
     order.sort(() => Math.random() - 0.5);
+    order.pop();
+    order = order.concat(order);
+    order.sort(() => Math.random() - 0.5);
+    console.log(order);
     for (var x = 0; x < columns; x++) {
         var acc = [];
         for (var y = 0; y < rows; y++) {
@@ -138,7 +178,6 @@ function gameActive() {
     switch (gameState) {
         case "GAME_1":
         case "GAME_2":
-        case "GAME_3":
             return true;
         default:
             return false;
@@ -152,7 +191,9 @@ function processRound() {
             firstCard = null;
             secondCard = null;
             if (matchCount == (rows * columns / 2))
-                alert("GAME WON");
+                setTimeout(() => {
+                    gameWon();
+                }, 1000);
         } else {
             canClick = false;
             setTimeout(() => {
@@ -164,6 +205,16 @@ function processRound() {
             }, wrongMatchWait * 1000)
         }
     } 
+}
+function gameWon() {
+    if (gameState == "GAME_1") {
+        gameState = "INSTRUCTIONS_2";
+    } else if (gameState == "GAME_2") {
+        gameState = "CHALLENGE_COMPLETE";
+        setTimeout(() => {
+            goTo(place, true)
+        }, 5000)
+    }
 }
 
 // FEEDBACK AND CONTROLS
@@ -190,3 +241,12 @@ function coordToCard(xCoord, yCoord) {
     if (x >= cardData.length || y > cardData[0].length) return null;
     return cardData[x][y];
 }
+// KEY LISTENERS AND CONTROL
+document.onkeydown = function(e) {
+    switch (e.keyCode) { 
+        case 32:            // SPACE BAR
+            return;
+        case 13:            // ENTER KEY
+            return startGame();
+    } 
+};
