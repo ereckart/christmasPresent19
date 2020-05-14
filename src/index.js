@@ -33,7 +33,7 @@ const TheLand = new (require('./core/TheLand'))();
 const Downtown = new (require('./core/Downtown'))();
 const Eegees = new (require('./core/Eegees'))();
 const TRB = new (require('./core/TRB'))();
-const MtLemmon = new(require('./core/TRB'))();
+const MtLemmon = new(require('./core/MtLemmon'))();
 const placeMap = {
     'home': Home,
     'theland': TheLand,

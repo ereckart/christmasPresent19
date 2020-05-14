@@ -15,6 +15,7 @@ class MtLemmonCharacter {
     constructor() {
         this.metPlayers = [];
         this.location = "MtLemmon";
+        this.name = "mtlemmon";
     }
 
     getMetPlayers() {
